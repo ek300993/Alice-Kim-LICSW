@@ -410,12 +410,6 @@ a.btn-primary:hover {
   pointer-events: none;
 }
 
-.gradient-bg-animated {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark), var(--color-secondary-dark), var(--color-primary));
-  background-size: 300% 300%;
-  animation: gradientShift 10s ease infinite;
-}
-
 /* Cards */
 .card {
   background: var(--color-surface);
