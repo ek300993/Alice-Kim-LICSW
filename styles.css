@@ -235,6 +235,12 @@ nav {
   align-items: center;
 }
 
+.nav-brand img,
+footer .footer-grid img,
+.logos-grid img {
+  border-radius: 0;
+}
+
 .nav-brand {
   font-family: var(--font-heading);
   font-size: 24px;
