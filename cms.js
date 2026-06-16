@@ -176,6 +176,8 @@
       padding: 32px;
       width: 90%;
       max-width: 440px;
+      max-height: 90vh;
+      overflow-y: auto;
       box-shadow: 0 20px 50px rgba(32, 32, 32, 0.15);
       color: #202020;
       font-family: 'Inter', sans-serif;
@@ -1115,7 +1117,6 @@
     const today = new Date().toISOString().split('T')[0];
     const postModalHtml = `
       <h3>Create New Blog Post</h3>
-      <p>Fill out the details below to create and publish a new post.</p>
       
       <div class="cms-form-group">
         <label for="cms-post-autofill" style="color: var(--color-primary-dark); font-weight: bold;">[Optional] Auto-Fill from HTML Paste</label>
