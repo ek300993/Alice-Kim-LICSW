@@ -17,11 +17,36 @@
   </script>
   <style>
     .blog-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      overflow: hidden;
+      padding: 0 !important; /* Let image bleed */
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(216, 214, 192, 0.4);
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-ambient);
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
     .blog-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-6px);
       box-shadow: var(--shadow-hover) !important;
+    }
+    .blog-card:hover .blog-card-img {
+      transform: scale(1.05);
+    }
+    .blog-card:hover .blog-card-title {
+      color: var(--color-primary) !important;
+    }
+    .blog-card:hover .blog-card-link .arrow {
+      transform: translateX(4px);
+    }
+    #cms-grid-add-card:hover .add-icon {
+      transform: scale(1.15) rotate(90deg);
+      color: var(--color-secondary) !important;
+    }
+    #cms-grid-add-card:hover h3 {
+      color: var(--color-secondary) !important;
     }
   </style>
 </head>
@@ -124,27 +149,72 @@
         .then(res => res.json())
         .then(posts => {
           const container = document.getElementById('blog-posts-grid');
+          container.innerHTML = '';
+
+          // Prepend the Add New Blog Post card if logged into the editor
+          if (localStorage.getItem('cms_logged_in') === 'true') {
+            const addCard = document.createElement('div');
+            addCard.id = 'cms-grid-add-card';
+            addCard.className = 'card blog-card';
+            addCard.style.display = 'flex';
+            addCard.style.flexDirection = 'column';
+            addCard.style.justifyContent = 'center';
+            addCard.style.alignItems = 'center';
+            addCard.style.padding = '2.5rem 2rem';
+            addCard.style.border = '2px dashed #3E6B71';
+            addCard.style.background = 'rgba(138, 154, 128, 0.03)';
+            addCard.style.minHeight = '380px';
+            addCard.style.textAlign = 'center';
+            
+            addCard.innerHTML = `
+              <div style="font-size: 54px; color: #245359; line-height: 1; margin-bottom: 16px; font-weight: 300; transition: transform 0.3s ease;" class="add-icon">+</div>
+              <h3 style="font-size: 20px; color: #245359; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-weight: 600; transition: color 0.3s ease;">Add New Blog Post</h3>
+              <p style="font-size: 14px; color: #404849; margin: 0; line-height: 1.4; max-width: 240px; opacity: 0.8;">Click here to open the creation editor and publish a new post.</p>
+            `;
+            
+            addCard.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (window.showNewPostModal) {
+                window.showNewPostModal();
+              }
+            });
+            container.appendChild(addCard);
+          }
+
           if (!posts || posts.length === 0) {
-            container.innerHTML = '<p class="text-center" style="grid-column: 1/-1; opacity: 0.7;">No blog posts published yet.</p>';
+            if (localStorage.getItem('cms_logged_in') !== 'true') {
+              container.innerHTML = '<p class="text-center" style="grid-column: 1/-1; opacity: 0.7;">No blog posts published yet.</p>';
+            }
             return;
           }
-          container.innerHTML = '';
           posts.forEach(post => {
             const card = document.createElement('div');
             card.className = 'card blog-card';
             card.style.display = 'flex';
             card.style.flexDirection = 'column';
-            card.style.padding = '2rem';
             
             card.innerHTML = `
-              ${post.image ? `<img src="${post.image}" alt="${post.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 1.5rem;">` : ''}
-              <div style="font-size: 13px; font-weight: 700; color: var(--color-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
-                ${new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              ${post.image ? `
+                <div style="width: 100%; height: 220px; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                  <img src="${post.image}" alt="${post.title}" class="blog-card-img" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                </div>
+              ` : ''}
+              <div class="blog-card-body" style="padding: 2rem; display: flex; flex-direction: column; flex-grow: 1;">
+                <div style="font-size: 12px; font-weight: 600; color: var(--color-secondary); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem;">
+                  ${new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </div>
+                <h3 class="blog-card-title" style="font-size: 24px; margin-bottom: 0.75rem; color: var(--color-primary-dark); line-height: 1.3; font-family: var(--font-heading); transition: color 0.3s ease;">${post.title}</h3>
+                <p style="font-size: 15px; margin-bottom: 1.5rem; color: var(--color-text-light); line-height: 1.6; flex-grow: 1;">${post.excerpt}</p>
+                <div style="display: flex; align-items: center; font-size: 14px; font-weight: 600; color: var(--color-primary); margin-top: auto;" class="blog-card-link">
+                  Read Article <span style="margin-left: 6px; transition: transform 0.3s ease;" class="arrow">&rarr;</span>
+                </div>
               </div>
-              <h3 style="font-size: 22px; margin-bottom: 1rem; color: var(--color-primary-dark);">${post.title}</h3>
-              <p style="font-size: 15px; margin-bottom: 1.5rem; flex-grow: 1; color: var(--color-text-light);">${post.excerpt}</p>
-              <a href="post.html?id=${post.id}" class="btn btn-secondary" style="margin-top: auto; text-align: center;">Read Article &rarr;</a>
             `;
+            
+            card.addEventListener('click', () => {
+              window.location.href = `post.html?id=${post.id}`;
+            });
+            
             container.appendChild(card);
           });
         })

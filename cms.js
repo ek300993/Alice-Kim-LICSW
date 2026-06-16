@@ -672,11 +672,51 @@
       }
     `;
     document.head.appendChild(styleEl);
+
+    // Prepend Add Card if on blog.html and not already present
+    if (getFilename() === 'blog.html') {
+      const grid = document.getElementById('blog-posts-grid');
+      if (grid && !document.getElementById('cms-grid-add-card')) {
+        const addCard = document.createElement('div');
+        addCard.id = 'cms-grid-add-card';
+        addCard.className = 'card blog-card';
+        addCard.style.display = 'flex';
+        addCard.style.flexDirection = 'column';
+        addCard.style.justifyContent = 'center';
+        addCard.style.alignItems = 'center';
+        addCard.style.padding = '2.5rem 2rem';
+        addCard.style.border = '2px dashed #3E6B71';
+        addCard.style.cursor = 'pointer';
+        addCard.style.background = 'rgba(138, 154, 128, 0.03)';
+        addCard.style.minHeight = '380px';
+        addCard.style.textAlign = 'center';
+        
+        addCard.innerHTML = `
+          <div style="font-size: 54px; color: #245359; line-height: 1; margin-bottom: 16px; font-weight: 300; transition: transform 0.3s ease;" class="add-icon">+</div>
+          <h3 style="font-size: 20px; color: #245359; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-weight: 600; transition: color 0.3s ease;">Add New Blog Post</h3>
+          <p style="font-size: 14px; color: #404849; margin: 0; line-height: 1.4; max-width: 240px; opacity: 0.8;">Click here to open the creation editor and publish a new post.</p>
+        `;
+        
+        addCard.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showNewPostModal();
+        });
+        
+        if (grid.firstChild) {
+          grid.insertBefore(addCard, grid.firstChild);
+        } else {
+          grid.appendChild(addCard);
+        }
+      }
+    }
   }
 
   function disableEditMode() {
     if (!isEditMode) return;
     isEditMode = false;
+    
+    const addCard = document.getElementById('cms-grid-add-card');
+    if (addCard) addCard.remove();
     
     localStorage.removeItem('cms_logged_in');
     hideControlPanel();
@@ -1435,6 +1475,8 @@
 
     cancelBtn.addEventListener('click', () => closeModal('cms-new-post-modal'));
   }
+
+  window.showNewPostModal = showNewPostModal;
 
   // --- SAVE SINGLE BLOG POST UPDATES FROM DOM ---
   async function publishPostUpdates() {
