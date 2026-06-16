@@ -423,7 +423,7 @@
     if (footerLink) {
       footerLink.addEventListener('click', (e) => {
         e.preventDefault();
-        if (sessionStorage.getItem('cms_logged_in') === 'true') {
+        if (localStorage.getItem('cms_logged_in') === 'true') {
           enableEditMode();
         } else {
           showLoginModal();
@@ -432,7 +432,7 @@
     }
 
     // Check if user is already logged in (persistence in session)
-    if (sessionStorage.getItem('cms_logged_in') === 'true') {
+    if (localStorage.getItem('cms_logged_in') === 'true') {
       enableEditMode();
     }
   }
@@ -507,7 +507,7 @@
       const hashed = await sha256(input);
       
       if (hashed === PASSWORD_HASH) {
-        sessionStorage.setItem('cms_logged_in', 'true');
+        localStorage.setItem('cms_logged_in', 'true');
         closeModal('cms-login-modal');
         showToast('Login successful! Welcome to Editor Mode.');
         enableEditMode();
@@ -587,18 +587,32 @@
     if (!panel) {
       panel = document.createElement('div');
       panel.id = 'cms-control-panel';
+      const filename = getFilename();
+      let actionButtons = `
+        <button class="cms-btn" id="cms-discard-btn">Discard Draft</button>
+        <button class="cms-btn" id="cms-settings-btn">Settings</button>
+      `;
+      
+      if (filename === 'blog.html') {
+        actionButtons += `<button class="cms-btn cms-btn-primary" id="cms-new-post-btn">New Post</button>`;
+      } else if (filename === 'post.html') {
+        actionButtons += `
+          <button class="cms-btn cms-btn-primary" id="cms-publish-post-btn">Publish Updates</button>
+          <button class="cms-btn cms-btn-danger" id="cms-delete-post-btn">Delete Post</button>
+        `;
+      } else {
+        actionButtons += `<button class="cms-btn cms-btn-primary" id="cms-publish-btn">Publish to Live</button>`;
+      }
+      
+      actionButtons += `<button class="cms-btn cms-btn-danger" id="cms-logout-btn">Log Out</button>`;
+
       panel.innerHTML = `
         <div class="cms-brand">Alice Kim CMS</div>
         <div class="cms-status">
           <div class="cms-indicator"></div>
           <span>Editor Mode</span>
         </div>
-        <div class="cms-panel-actions">
-          <button class="cms-btn" id="cms-discard-btn">Discard Draft</button>
-          <button class="cms-btn" id="cms-settings-btn">Settings</button>
-          <button class="cms-btn cms-btn-primary" id="cms-publish-btn">Publish to Live</button>
-          <button class="cms-btn cms-btn-danger" id="cms-logout-btn">Log Out</button>
-        </div>
+        <div class="cms-panel-actions">${actionButtons}</div>
       `;
       document.body.appendChild(panel);
 
@@ -610,10 +624,16 @@
       });
 
       panel.querySelector('#cms-settings-btn').addEventListener('click', showSettingsModal);
-
-      panel.querySelector('#cms-publish-btn').addEventListener('click', publishChanges);
-
       panel.querySelector('#cms-logout-btn').addEventListener('click', disableEditMode);
+
+      if (filename === 'blog.html') {
+        panel.querySelector('#cms-new-post-btn').addEventListener('click', showNewPostModal);
+      } else if (filename === 'post.html') {
+        panel.querySelector('#cms-publish-post-btn').addEventListener('click', publishPostUpdates);
+        panel.querySelector('#cms-delete-post-btn').addEventListener('click', deleteCurrentPost);
+      } else {
+        panel.querySelector('#cms-publish-btn').addEventListener('click', publishChanges);
+      }
     }
     
     // Force browser reflow and slide up panel
@@ -658,7 +678,7 @@
     if (!isEditMode) return;
     isEditMode = false;
     
-    sessionStorage.removeItem('cms_logged_in');
+    localStorage.removeItem('cms_logged_in');
     hideControlPanel();
     revertEditability();
     
@@ -675,7 +695,7 @@
   function makeElementsEditable() {
     // Find all text elements to edit
     // Skip nav, footer, script tags, cms elements
-    const textSelectors = 'h1, h2, h3, h4, p, li, span.testimonial-author, span.testimonial-title';
+    const textSelectors = 'h1, h2, h3, h4, p, li, span.testimonial-author, span.testimonial-title, #post-date';
     const elements = document.querySelectorAll(textSelectors);
     
     elements.forEach(el => {
@@ -1119,6 +1139,418 @@
       loadingToasts.forEach(t => t.remove());
       
       showToast(`Error publishing changes: ${error.message}`, 'error', 6000);
+    }
+  }
+
+  // --- GITHUB REPO FILE ACCESS UTILS ---
+  async function fetchRepoFile(path) {
+    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${REPO_BRANCH}`, {
+      headers: {
+        'Authorization': `token ${githubToken}`
+      }
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || `Failed to fetch ${path}`);
+    }
+    const data = await res.json();
+    // Decode base64 content
+    const content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+    return {
+      content: JSON.parse(content),
+      sha: data.sha
+    };
+  }
+
+  async function commitRepoFile(path, jsonContent, sha, commitMsg) {
+    const stringified = JSON.stringify(jsonContent, null, 2);
+    const base64 = btoa(unescape(encodeURIComponent(stringified)));
+    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${githubToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: commitMsg,
+        content: base64,
+        sha: sha,
+        branch: REPO_BRANCH
+      })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || `Failed to save ${path}`);
+    }
+  }
+
+  // --- NEW POST DIALOG ---
+  function showNewPostModal() {
+    const today = new Date().toISOString().split('T')[0];
+    const postModalHtml = `
+      <h3>Create New Blog Post</h3>
+      <p>Fill out the details below to create and publish a new post.</p>
+      
+      <div class="cms-form-group">
+        <label for="cms-post-autofill" style="color: var(--color-primary-dark); font-weight: bold;">[Optional] Auto-Fill from HTML Paste</label>
+        <textarea id="cms-post-autofill" rows="3" style="padding: 10px; border: 1px dashed #245359; border-radius: 8px; font-family: var(--font-body); font-size: 13px; width: 100%; resize: vertical;" placeholder="Paste raw HTML here (will auto-extract Title, Cover Image, Excerpt, and Body content below)..."></textarea>
+      </div>
+      
+      <div style="border-top: 1px solid rgba(62, 107, 113, 0.2); margin: 1.5rem 0;"></div>
+
+      <div class="cms-form-group">
+        <label for="cms-post-title">Title</label>
+        <input type="text" id="cms-post-title" placeholder="e.g. Navigating Transitions">
+      </div>
+      
+      <div class="cms-form-group">
+        <label for="cms-post-date-input">Publish Date</label>
+        <input type="date" id="cms-post-date-input" value="${today}">
+      </div>
+
+      <div class="cms-form-group">
+        <label for="cms-post-excerpt-input">Excerpt / Summary</label>
+        <input type="text" id="cms-post-excerpt-input" placeholder="A short summary of the article...">
+      </div>
+
+      <div class="cms-form-group">
+        <label>Cover Image</label>
+        <input type="file" id="cms-post-image-file" accept="image/*">
+        <div style="font-size: 11px; margin-top: 4px; color: #5a6951;">Or enter direct URL below:</div>
+        <input type="text" id="cms-post-image-url" placeholder="e.g. Assets/karsten-wurth-unsplash.jpg">
+        <div id="cms-post-img-progress" style="font-size: 11px; color: #5a6951; display: none; margin-top: 4px;">Uploading...</div>
+      </div>
+
+      <div class="cms-form-group">
+        <label for="cms-post-body">Body Content (HTML allowed)</label>
+        <textarea id="cms-post-body" rows="8" style="padding: 10px; border: 1px solid #8A9A80; border-radius: 8px; font-family: var(--font-body); font-size: 14px; width: 100%; resize: vertical;" placeholder="&lt;p&gt;Write your article here...&lt;/p&gt;"></textarea>
+      </div>
+
+      <div id="cms-post-error" class="cms-error"></div>
+
+      <div class="cms-modal-actions">
+        <button class="cms-modal-btn" id="cms-post-cancel">Cancel</button>
+        <button class="cms-modal-btn cms-modal-btn-primary" id="cms-post-publish">Publish Post</button>
+      </div>
+    `;
+
+    const backdrop = createModal('cms-new-post-modal', postModalHtml);
+    showModal('cms-new-post-modal');
+
+    const titleInput = backdrop.querySelector('#cms-post-title');
+    const dateInput = backdrop.querySelector('#cms-post-date-input');
+    const excerptInput = backdrop.querySelector('#cms-post-excerpt-input');
+    const fileInput = backdrop.querySelector('#cms-post-image-file');
+    const urlInput = backdrop.querySelector('#cms-post-image-url');
+    const imgProgress = backdrop.querySelector('#cms-post-img-progress');
+    const bodyInput = backdrop.querySelector('#cms-post-body');
+    const publishBtn = backdrop.querySelector('#cms-post-publish');
+    const cancelBtn = backdrop.querySelector('#cms-post-cancel');
+    const errorDiv = backdrop.querySelector('#cms-post-error');
+
+    titleInput.focus();
+
+    // Auto-fill parser
+    const autofillInput = backdrop.querySelector('#cms-post-autofill');
+    if (autofillInput) {
+      autofillInput.addEventListener('input', () => {
+        const rawHtml = autofillInput.value.trim();
+        if (!rawHtml) return;
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(rawHtml, 'text/html');
+
+        // Extract H1 Title
+        const h1 = doc.querySelector('h1');
+        if (h1) {
+          titleInput.value = h1.textContent.trim();
+          h1.remove();
+        }
+
+        // Extract first image as Cover Image
+        const img = doc.querySelector('img');
+        if (img) {
+          const imgSrc = img.getAttribute('src') || '';
+          urlInput.value = imgSrc;
+          
+          // Remove the image only if it's near the top
+          const bodyChildren = Array.from(doc.body.children);
+          const imgIndex = bodyChildren.findIndex(child => child.contains(img));
+          if (imgIndex !== -1 && imgIndex < 2) {
+            img.closest('p')?.remove() || img.remove();
+          }
+        }
+
+        // Extract first paragraph as Excerpt
+        const firstP = doc.querySelector('p');
+        if (firstP) {
+          let excerptText = firstP.textContent.trim();
+          if (excerptText.length > 150) {
+            excerptText = excerptText.substring(0, 147) + '...';
+          }
+          excerptInput.value = excerptText;
+        }
+
+        // The rest is content
+        bodyInput.value = doc.body.innerHTML.trim();
+        
+        showToast('HTML parsed successfully! Fields populated.', 'info');
+      });
+    }
+
+    // Handle Image file selection & upload immediately
+    let uploadedImgPath = '';
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      if (!githubToken) {
+        errorDiv.innerText = 'Please configure your GitHub token in settings first.';
+        errorDiv.style.display = 'block';
+        fileInput.value = '';
+        return;
+      }
+
+      errorDiv.style.display = 'none';
+      imgProgress.innerText = 'Reading file...';
+      imgProgress.style.display = 'block';
+      publishBtn.disabled = true;
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const base64Content = reader.result.split(',')[1];
+          const filename = `uploaded_${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+          const uploadPath = `Assets/${filename}`;
+
+          imgProgress.innerText = 'Uploading image to repository...';
+
+          const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${uploadPath}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${githubToken}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `CMS: Upload blog cover ${filename}`,
+              content: base64Content,
+              branch: REPO_BRANCH
+            })
+          });
+
+          if (!res.ok) {
+            const errJson = await res.json();
+            throw new Error(errJson.message || 'GitHub API error');
+          }
+
+          uploadedImgPath = uploadPath;
+          urlInput.value = uploadPath;
+          imgProgress.innerText = 'Uploaded successfully!';
+          publishBtn.disabled = false;
+        } catch (err) {
+          errorDiv.innerText = `Image upload failed: ${err.message}`;
+          errorDiv.style.display = 'block';
+          imgProgress.style.display = 'none';
+          publishBtn.disabled = false;
+          fileInput.value = '';
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    publishBtn.addEventListener('click', async () => {
+      errorDiv.style.display = 'none';
+      const title = titleInput.value.trim();
+      const date = dateInput.value;
+      const excerpt = excerptInput.value.trim();
+      const content = bodyInput.value.trim();
+      const image = urlInput.value.trim() || uploadedImgPath;
+
+      if (!title || !date || !excerpt || !content) {
+        errorDiv.innerText = 'Please fill out all fields.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      if (!githubToken) {
+        errorDiv.innerText = 'GitHub token is missing. Please save it in Settings.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      publishBtn.disabled = true;
+      publishBtn.innerText = 'Publishing...';
+      showToast('Publishing new post...', 'info', 0);
+
+      try {
+        // Generate unique slug
+        const slug = title.toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+
+        // Fetch current posts database
+        const { content: posts, sha } = await fetchRepoFile('posts.json');
+
+        // Check if slug already exists
+        if (posts.some(p => p.id === slug)) {
+          throw new Error('A post with a similar title already exists. Please change the title.');
+        }
+
+        // Add new post
+        const newPost = {
+          id: slug,
+          title,
+          date,
+          excerpt,
+          image,
+          content
+        };
+
+        // Put new post at the beginning of the list (newest first)
+        posts.unshift(newPost);
+
+        // Save back to GitHub
+        await commitRepoFile('posts.json', posts, sha, `CMS: Publish new post "${title}"`);
+
+        // Close modal & toast success
+        closeModal('cms-new-post-modal');
+        // Clear active informational toasts
+        document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+        showToast('Blog post published successfully! Redirecting...');
+
+        // Navigate to new post page
+        setTimeout(() => {
+          window.location.href = `post.html?id=${slug}`;
+        }, 1500);
+
+      } catch (err) {
+        document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+        errorDiv.innerText = err.message;
+        errorDiv.style.display = 'block';
+        publishBtn.disabled = false;
+        publishBtn.innerText = 'Publish Post';
+        showToast(`Failed to publish: ${err.message}`, 'error');
+      }
+    });
+
+    cancelBtn.addEventListener('click', () => closeModal('cms-new-post-modal'));
+  }
+
+  // --- SAVE SINGLE BLOG POST UPDATES FROM DOM ---
+  async function publishPostUpdates() {
+    if (!githubToken) {
+      showToast('GitHub token missing. Please configure it in settings.', 'error');
+      showSettingsModal();
+      return;
+    }
+
+    if (activeEditable) {
+      stopEditingText(activeEditable);
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+    if (!postId) {
+      showToast('Could not resolve blog post ID.', 'error');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to publish these edits to the live blog post?')) return;
+
+    showToast('Fetching latest blog database...', 'info', 0);
+
+    try {
+      // 1. Fetch posts.json
+      const { content: posts, sha } = await fetchRepoFile('posts.json');
+
+      // 2. Find post
+      const postIdx = posts.findIndex(p => p.id === postId);
+      if (postIdx === -1) {
+        throw new Error('Blog post not found in database.');
+      }
+
+      // 3. Read DOM values
+      const title = document.getElementById('post-title').innerText.trim();
+      const dateText = document.getElementById('post-date').innerText.trim();
+      const excerpt = document.getElementById('post-excerpt').innerText.trim();
+      const content = document.getElementById('post-content').innerHTML.trim();
+      
+      const imgEl = document.getElementById('post-image');
+      let image = '';
+      if (imgEl) {
+        image = imgEl.getAttribute('src') || '';
+      }
+
+      // Parse date to YYYY-MM-DD
+      const parsedDate = new Date(dateText);
+      let date = posts[postIdx].date; // fallback to original
+      if (!isNaN(parsedDate.getTime())) {
+        const year = parsedDate.getFullYear();
+        const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(parsedDate.getDate()).padStart(2, '0');
+        date = `${year}-${month}-${day}`;
+      }
+
+      // Update post in the list
+      posts[postIdx].title = title;
+      posts[postIdx].date = date;
+      posts[postIdx].excerpt = excerpt;
+      posts[postIdx].image = image;
+      posts[postIdx].content = content;
+
+      showToast('Publishing updates to GitHub...', 'info', 0);
+
+      // 4. Save back to GitHub
+      await commitRepoFile('posts.json', posts, sha, `CMS: Update blog post "${title}"`);
+
+      document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+      showToast('Blog post updated successfully!');
+
+      setTimeout(() => window.location.reload(), 1000);
+
+    } catch (err) {
+      document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+      showToast(`Update failed: ${err.message}`, 'error', 6000);
+    }
+  }
+
+  // --- DELETE ACTIVE BLOG POST ---
+  async function deleteCurrentPost() {
+    if (!githubToken) {
+      showToast('GitHub token missing. Please configure it in settings.', 'error');
+      showSettingsModal();
+      return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+    if (!postId) return;
+
+    if (!confirm('WARNING: Are you sure you want to permanently delete this blog post? This action cannot be undone.')) return;
+
+    showToast('Deleting post from database...', 'info', 0);
+
+    try {
+      const { content: posts, sha } = await fetchRepoFile('posts.json');
+
+      const filteredPosts = posts.filter(p => p.id !== postId);
+      
+      if (posts.length === filteredPosts.length) {
+        throw new Error('Post not found in database.');
+      }
+
+      await commitRepoFile('posts.json', filteredPosts, sha, `CMS: Delete blog post with id "${postId}"`);
+
+      document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+      showToast('Blog post deleted successfully! Redirecting...');
+
+      setTimeout(() => {
+        window.location.href = 'blog.html';
+      }, 1500);
+
+    } catch (err) {
+      document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+      showToast(`Delete failed: ${err.message}`, 'error', 6000);
     }
   }
 

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Alice Kim Coaching & Counseling</title>
+  <meta name="description"
+    content="Insights, perspectives, and practical tools from Alice Kim, LICSW on navigating career changes, life transitions, and mental wellness.">
+  <link rel="icon" type="image/png" href="Assets/AliceKimCoaching&CounselingIcon.png">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-TtsMHUYlnLQ8aZ5XsKdrV.js"></script>
+  <script>
+    window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) }, plausible.init = plausible.init || function (i) { plausible.o = i || {} };
+    plausible.init()
+  </script>
+  <style>
+    .blog-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover) !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container nav-container">
+      <a href="/" class="nav-brand">
+        <img src="Assets/AliceKimCoaching&Counseling.png" alt="Alice Kim LICSW Coaching & Counseling"
+          style="height: 50px; width: auto; object-fit: contain;">
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/faq">FAQ</a></li>
+        <li><a href="/blog" class="active">Blog</a></li>
+        <li class="mobile-only"><a href="https://forms.gle/m1GqBSPbkw9WhJBYA" target="_blank" class="btn btn-primary">Request a Free 15 Minute Consultation</a></li>
+      </ul>
+      <a href="https://forms.gle/m1GqBSPbkw9WhJBYA" target="_blank" class="btn btn-primary nav-cta-desktop">Request a Free 15 Minute Consultation</a>
+      <button class="menu-toggle" aria-label="Toggle navigation">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="banner-header" style="background-image: url('Assets/Services-Header.jpg');">
+    <div class="container">
+      <h1>Blog &amp; Perspectives</h1>
+    </div>
+  </header>
+
+  <!-- Blog Feed -->
+  <section class="pt-0">
+    <div class="container">
+      <div class="text-center mb-5 text-container">
+        <h2>Insights for the Journey</h2>
+        <p>A collection of articles, resources, and reflections to support you in navigating career transitions, relational changes, and daily emotional well-being.</p>
+      </div>
+
+      <div class="grid-3" id="blog-posts-grid">
+        <!-- Dynamically loaded posts -->
+        <p class="text-center" style="grid-column: 1/-1; opacity: 0.7;">Loading articles...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img src="Assets/AliceKimCoaching&CounselingWhite.png" alt="Alice Kim LICSW Coaching & Counseling"
+            style="height: 50px; width: auto; object-fit: contain;">
+          <p class="footer-contact mt-3">
+            <a href="mailto:info@alicekimlicsw.com" class="footer-link">info@alicekimlicsw.com</a>
+            <br>
+            <span class="mt-2" style="display: inline-block;">1051 Beacon Street, Suite 510<br>Brookline, MA
+              02446</span>
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links-list">
+            <li><a href="/" class="footer-link">Home</a></li>
+            <li><a href="/about" class="footer-link">About</a></li>
+            <li><a href="/services" class="footer-link">Services</a></li>
+            <li><a href="/faq" class="footer-link">FAQ</a></li>
+            <li><a href="/blog" class="footer-link">Blog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Get Started</h4>
+          <ul class="footer-links-list">
+            <li><a href="https://forms.gle/m1GqBSPbkw9WhJBYA" target="_blank" class="footer-link">Request a Free 15 Minute Consultation</a></li>
+            <li><a href="https://www.linkedin.com/in/alice-kimlicsw/" target="_blank" class="footer-link">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-flex">
+          <p>&copy; 2025 Alice Kim LICSW Counseling. All Rights Reserved.</p>
+          <p><a href="#" id="editor-login" class="footer-link" style="font-size: 12px; opacity: 0.5;">Editor Login</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('posts.json')
+        .then(res => res.json())
+        .then(posts => {
+          const container = document.getElementById('blog-posts-grid');
+          if (!posts || posts.length === 0) {
+            container.innerHTML = '<p class="text-center" style="grid-column: 1/-1; opacity: 0.7;">No blog posts published yet.</p>';
+            return;
+          }
+          container.innerHTML = '';
+          posts.forEach(post => {
+            const card = document.createElement('div');
+            card.className = 'card blog-card';
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.padding = '2rem';
+            
+            card.innerHTML = `
+              ${post.image ? `<img src="${post.image}" alt="${post.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 1.5rem;">` : ''}
+              <div style="font-size: 13px; font-weight: 700; color: var(--color-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">
+                ${new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </div>
+              <h3 style="font-size: 22px; margin-bottom: 1rem; color: var(--color-primary-dark);">${post.title}</h3>
+              <p style="font-size: 15px; margin-bottom: 1.5rem; flex-grow: 1; color: var(--color-text-light);">${post.excerpt}</p>
+              <a href="post.html?id=${post.id}" class="btn btn-secondary" style="margin-top: auto; text-align: center;">Read Article &rarr;</a>
+            `;
+            container.appendChild(card);
+          });
+        })
+        .catch(err => {
+          console.error('Error loading posts:', err);
+          document.getElementById('blog-posts-grid').innerHTML = '<p class="text-center" style="grid-column: 1/-1; color: var(--color-error);">Error loading blog posts.</p>';
+        });
+    });
+  </script>
+  <script src="script.js"></script>
+  <script src="cms.js"></script>
+</body>
+
+</html>
