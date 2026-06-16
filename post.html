@@ -16,12 +16,20 @@
   <style>
     .article-header {
       padding-top: 140px;
-      padding-bottom: 40px;
+      padding-bottom: 20px;
     }
     .article-container {
       max-width: 800px;
       margin: 0 auto;
       padding: 0 var(--gutter);
+    }
+    #post-image-section {
+      padding-top: 0;
+      padding-bottom: 24px;
+    }
+    .article-body-section {
+      padding-top: 0;
+      padding-bottom: var(--section-gap);
     }
     .article-body {
       font-size: 18px;
@@ -96,14 +104,14 @@
   </header>
 
   <!-- Featured Image -->
-  <section class="py-0" id="post-image-section">
+  <section id="post-image-section">
     <div class="article-container">
       <img id="post-image" src="" alt="" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-ambient);">
     </div>
   </section>
 
   <!-- Article Body -->
-  <section>
+  <section class="article-body-section">
     <div class="article-container">
       <article class="article-body" id="post-content">
         <p>Loading article content...</p>

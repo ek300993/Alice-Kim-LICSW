@@ -23,15 +23,7 @@
       border-radius: 4px;
     }
     
-    /* Edit Link overlay styles */
-    .cms-link-editable {
-      position: relative;
-    }
-    .cms-link-editable:hover {
-      outline: 2px dashed #8A9A80 !important;
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
+
     
     /* Image editable wrappers */
     .cms-img-wrapper {
@@ -280,22 +272,7 @@
       display: none;
     }
 
-    /* Popover for Links & Buttons */
-    .cms-popover {
-      position: absolute;
-      z-index: 1000000;
-      background: #FDF9F1;
-      border: 1px solid #D8D6C0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      width: 280px;
-      box-shadow: 0 8px 24px rgba(32,32,32,0.12);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-family: 'Inter', sans-serif;
-      color: #202020;
-    }
+
 
     /* Toast Notifications */
     .cms-toast-container {
@@ -655,7 +632,6 @@
     
     showControlPanel();
     makeElementsEditable();
-    makeLinksEditable();
     makeImagesEditable();
     
     // Add custom helper CSS overrides
@@ -665,10 +641,6 @@
       /* Temporarily disable standard transitions on hover so user edits are easier */
       .card:hover, .testimonial-card:hover, .btn:hover {
         transform: none !important;
-      }
-      /* Prevent link clicking navigation in editor mode */
-      a:not(.cms-allowed-link) {
-        cursor: default;
       }
     `;
     document.head.appendChild(styleEl);
@@ -813,90 +785,7 @@
     });
   }
 
-  // --- MAKE LINKS EDITABLE (LINKS AND BUTTONS) ---
-  function makeLinksEditable() {
-    const links = document.querySelectorAll('a.btn, .hero-actions a, .grid-2 a.btn, .card a.btn');
-    
-    links.forEach(link => {
-      // Skip nav and footer links
-      if (link.closest('nav') || link.closest('footer')) return;
 
-      link.classList.add('cms-link-editable');
-      
-      // Floating Edit button
-      link.addEventListener('click', (e) => {
-        if (!isEditMode) return;
-        e.preventDefault();
-        e.stopPropagation();
-        
-        showLinkEditorPopover(link);
-      });
-    });
-  }
-
-  function showLinkEditorPopover(link) {
-    // Remove existing popovers
-    const existing = document.querySelector('.cms-popover');
-    if (existing) existing.remove();
-
-    const popover = document.createElement('div');
-    popover.className = 'cms-popover';
-    
-    // Position
-    const rect = link.getBoundingClientRect();
-    popover.style.top = `${window.scrollY + rect.bottom + 8}px`;
-    popover.style.left = `${window.scrollX + rect.left}px`;
-    
-    popover.innerHTML = `
-      <div class="cms-form-group" style="margin-bottom: 8px;">
-        <label>Button Text</label>
-        <input type="text" id="cms-pop-text" value="${link.innerText.trim()}">
-      </div>
-      <div class="cms-form-group" style="margin-bottom: 8px;">
-        <label>URL / Link Destination</label>
-        <input type="text" id="cms-pop-url" value="${link.getAttribute('href') || ''}">
-      </div>
-      <div style="display:flex; justify-content: flex-end; gap:8px;">
-        <button class="cms-btn" id="cms-pop-cancel" style="padding:4px 10px; font-size:11px;">Cancel</button>
-        <button class="cms-btn cms-btn-primary" id="cms-pop-save" style="padding:4px 10px; font-size:11px;">Save</button>
-      </div>
-    `;
-    
-    document.body.appendChild(popover);
-
-    const textInput = popover.querySelector('#cms-pop-text');
-    const urlInput = popover.querySelector('#cms-pop-url');
-    const saveBtn = popover.querySelector('#cms-pop-save');
-    const cancelBtn = popover.querySelector('#cms-pop-cancel');
-
-    textInput.focus();
-
-    saveBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const newText = textInput.value.trim();
-      const newUrl = urlInput.value.trim();
-      
-      if (newText) link.innerText = newText;
-      if (newUrl) link.setAttribute('href', newUrl);
-      
-      popover.remove();
-      showToast('Button/link details updated.');
-    });
-
-    cancelBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      popover.remove();
-    });
-
-    // Close on clicking outside
-    const clickOutsideHandler = (e) => {
-      if (!popover.contains(e.target) && e.target !== link) {
-        popover.remove();
-        document.removeEventListener('click', clickOutsideHandler);
-      }
-    };
-    setTimeout(() => document.addEventListener('click', clickOutsideHandler), 10);
-  }
 
   // --- MAKE IMAGES EDITABLE (REPLACEMENT & UPLOAD) ---
   function makeImagesEditable() {
@@ -1081,9 +970,6 @@
       el.classList.remove('cms-editable-text');
       el.removeAttribute('data-cms-original');
       el.removeAttribute('contenteditable');
-    });
-    clone.querySelectorAll('.cms-link-editable').forEach(el => {
-      el.classList.remove('cms-link-editable');
     });
 
     // 5. Clean up Carousel duplicates (on index.html)
