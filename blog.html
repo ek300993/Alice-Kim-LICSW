@@ -148,8 +148,34 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('posts.json')
-        .then(res => res.json())
+      const githubToken = localStorage.getItem('cms_github_token');
+      const isLoggedIn = localStorage.getItem('cms_logged_in') === 'true';
+      let postsPromise;
+
+      if (isLoggedIn && githubToken) {
+        // Fetch directly from GitHub Contents API to bypass Pages build propagation delay for editors
+        postsPromise = fetch('https://api.github.com/repos/ek300993/Alice-Kim-LICSW/contents/posts.json?ref=master', {
+          headers: {
+            'Authorization': `token ${githubToken}`
+          }
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('GitHub API fetch failed');
+          return res.json();
+        })
+        .then(data => {
+          const content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+          return JSON.parse(content);
+        })
+        .catch(err => {
+          console.warn('Failed to fetch from GitHub API, falling back to static file:', err);
+          return fetch('posts.json?t=' + Date.now()).then(res => res.json());
+        });
+      } else {
+        postsPromise = fetch('posts.json?t=' + Date.now()).then(res => res.json());
+      }
+
+      postsPromise
         .then(posts => {
           const container = document.getElementById('blog-posts-grid');
           container.innerHTML = '';
