@@ -1007,7 +1007,7 @@
       const filepath = filename;
       
       // Fetch file SHA
-      const getFileRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filepath}?ref=${REPO_BRANCH}`, {
+      const getFileRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filepath}?ref=${REPO_BRANCH}&t=${Date.now()}`, {
         headers: {
           'Authorization': `token ${githubToken}`
         }
@@ -1070,7 +1070,7 @@
 
   // --- GITHUB REPO FILE ACCESS UTILS ---
   async function fetchRepoFile(path) {
-    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${REPO_BRANCH}`, {
+    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${REPO_BRANCH}&t=${Date.now()}`, {
       headers: {
         'Authorization': `token ${githubToken}`
       }

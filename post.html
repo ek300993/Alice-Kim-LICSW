@@ -179,7 +179,7 @@
 
       if (isLoggedIn && githubToken) {
         // Fetch directly from GitHub Contents API to bypass Pages build propagation delay for editors
-        postsPromise = fetch('https://api.github.com/repos/ek300993/Alice-Kim-LICSW/contents/posts.json?ref=master', {
+        postsPromise = fetch('https://api.github.com/repos/ek300993/Alice-Kim-LICSW/contents/posts.json?ref=master&t=' + Date.now(), {
           headers: {
             'Authorization': `token ${githubToken}`
           }
