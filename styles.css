@@ -921,7 +921,15 @@ footer h3 {
   color: var(--color-primary-dark);
 }
 
+.accordion-header h3 {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
 .accordion-icon {
+  flex-shrink: 0;
+  margin-left: 1rem;
   transition: transform 0.3s ease;
 }
 
@@ -933,12 +941,53 @@ footer h3 {
 }
 
 .accordion-item.active .accordion-content {
-  max-height: 1000px;
+  max-height: 2000px;
   padding-bottom: 1.5rem;
 }
 
 .accordion-item.active .accordion-icon {
   transform: rotate(180deg);
+}
+
+.accordion-content p {
+  margin-bottom: 1.25rem;
+}
+
+.accordion-content strong {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.accordion-content ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+}
+
+.accordion-content ul ul {
+  margin-top: 0.6rem;
+  margin-bottom: 0;
+}
+
+.accordion-content li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.accordion-content li::before {
+  content: '\2726';
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-size: 0.75em;
+  color: var(--color-secondary);
+}
+
+.accordion-content p:last-child,
+.accordion-content ul:last-child,
+.accordion-content li:last-child {
+  margin-bottom: 0;
 }
 
 .logos-grid {
