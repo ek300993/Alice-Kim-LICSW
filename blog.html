@@ -51,6 +51,23 @@
     .blog-card-img {
       border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
     }
+    .cms-edit-card-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      border: 1px solid var(--color-primary);
+      background: transparent;
+      color: var(--color-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      z-index: 10;
+    }
+    .cms-edit-card-btn:hover {
+      background: var(--color-primary);
+      color: #ffffff;
+    }
   </style>
 </head>
 
@@ -234,15 +251,33 @@
                 </div>
                 <h3 class="blog-card-title" style="font-size: 24px; margin-bottom: 0.75rem; color: var(--color-primary-dark); line-height: 1.3; font-family: var(--font-heading); transition: color 0.3s ease;">${post.title}</h3>
                 <p style="font-size: 15px; margin-bottom: 1.5rem; color: var(--color-text-light); line-height: 1.6; flex-grow: 1;">${post.author || 'Alice Kim, LICSW'}</p>
-                <div style="display: flex; align-items: center; font-size: 14px; font-weight: 600; color: var(--color-primary); margin-top: auto;" class="blog-card-link">
-                  Read Article <span style="margin-left: 6px; transition: transform 0.3s ease;" class="arrow">&rarr;</span>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+                  <div style="display: flex; align-items: center; font-size: 14px; font-weight: 600; color: var(--color-primary);" class="blog-card-link">
+                    Read Article <span style="margin-left: 6px; transition: transform 0.3s ease;" class="arrow">&rarr;</span>
+                  </div>
+                  ${localStorage.getItem('cms_logged_in') === 'true' ? `
+                    <button class="cms-edit-card-btn" data-id="${post.id}">Edit HTML</button>
+                  ` : ''}
                 </div>
               </div>
             `;
             
-            card.addEventListener('click', () => {
+            card.addEventListener('click', (e) => {
+              if (e.target.closest('.cms-edit-card-btn')) return;
               window.location.href = `post.html?id=${post.id}`;
             });
+
+            if (localStorage.getItem('cms_logged_in') === 'true') {
+              const editBtn = card.querySelector('.cms-edit-card-btn');
+              if (editBtn) {
+                editBtn.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  if (window.editPostById) {
+                    window.editPostById(post.id);
+                  }
+                });
+              }
+            }
             
             container.appendChild(card);
           });

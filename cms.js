@@ -586,7 +586,7 @@
         actionButtons += `<button class="cms-btn cms-btn-primary" id="cms-new-post-btn">New Post</button>`;
       } else if (filename === 'post.html') {
         actionButtons += `
-          <button class="cms-btn cms-btn-primary" id="cms-edit-post-btn">Edit Post</button>
+          <button class="cms-btn cms-btn-primary" id="cms-edit-post-btn">Edit HTML</button>
           <button class="cms-btn cms-btn-danger" id="cms-delete-post-btn">Delete Post</button>
         `;
       } else {
@@ -1409,9 +1409,10 @@
   }
 
   window.showNewPostModal = showNewPostModal;
+  window.editPostById = editPostById;
 
-  // --- EDIT SINGLE BLOG POST IN POPUP ---
-  async function editCurrentPost() {
+  // --- EDIT SINGLE BLOG POST IN POPUP BY ID ---
+  async function editPostById(postId) {
     if (!githubToken) {
       showToast('GitHub token missing. Please configure it in settings.', 'error');
       showSettingsModal();
@@ -1420,13 +1421,6 @@
 
     if (activeEditable) {
       stopEditingText(activeEditable);
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('id');
-    if (!postId) {
-      showToast('Could not resolve blog post ID.', 'error');
-      return;
     }
 
     showToast('Loading post data...', 'info', 0);
@@ -1444,6 +1438,17 @@
       document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
       showToast(`Failed to load post data: ${err.message}`, 'error', 6000);
     }
+  }
+
+  // --- EDIT SINGLE BLOG POST IN POPUP ---
+  async function editCurrentPost() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+    if (!postId) {
+      showToast('Could not resolve blog post ID.', 'error');
+      return;
+    }
+    await editPostById(postId);
   }
 
   // --- SAVE SINGLE BLOG POST UPDATES FROM DOM ---
