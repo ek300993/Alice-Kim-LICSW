@@ -342,6 +342,16 @@
   }
 
   // --- GENERAL UTILS ---
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   function getFilename() {
     let path = window.location.pathname;
     if (path === '/' || path.endsWith('/')) {
@@ -576,7 +586,7 @@
         actionButtons += `<button class="cms-btn cms-btn-primary" id="cms-new-post-btn">New Post</button>`;
       } else if (filename === 'post.html') {
         actionButtons += `
-          <button class="cms-btn cms-btn-primary" id="cms-publish-post-btn">Publish Updates</button>
+          <button class="cms-btn cms-btn-primary" id="cms-edit-post-btn">Edit Post</button>
           <button class="cms-btn cms-btn-danger" id="cms-delete-post-btn">Delete Post</button>
         `;
       } else {
@@ -608,7 +618,7 @@
       if (filename === 'blog.html') {
         panel.querySelector('#cms-new-post-btn').addEventListener('click', showNewPostModal);
       } else if (filename === 'post.html') {
-        panel.querySelector('#cms-publish-post-btn').addEventListener('click', publishPostUpdates);
+        panel.querySelector('#cms-edit-post-btn').addEventListener('click', editCurrentPost);
         panel.querySelector('#cms-delete-post-btn').addEventListener('click', deleteCurrentPost);
       } else {
         panel.querySelector('#cms-publish-btn').addEventListener('click', publishChanges);
@@ -1113,38 +1123,42 @@
   }
 
   // --- NEW POST DIALOG ---
-  function showNewPostModal() {
+  function showNewPostModal(postToEdit = null) {
     const today = new Date().toISOString().split('T')[0];
+    const isEditing = !!postToEdit;
+
     const postModalHtml = `
-      <h3>Create New Blog Post</h3>
+      <h3>${isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h3>
       
+      ${!isEditing ? `
       <div class="cms-form-group">
         <label for="cms-post-autofill" style="color: var(--color-primary-dark); font-weight: bold;">[Optional] Auto-Fill from HTML Paste</label>
         <textarea id="cms-post-autofill" rows="3" style="padding: 10px; border: 1px dashed #245359; border-radius: 8px; font-family: var(--font-body); font-size: 13px; width: 100%; resize: vertical;" placeholder="Paste raw HTML here (will auto-extract Title, Cover Image, Excerpt, and Body content below)..."></textarea>
       </div>
       
       <div style="border-top: 1px solid rgba(62, 107, 113, 0.2); margin: 1.5rem 0;"></div>
+      ` : ''}
 
       <div class="cms-form-group">
         <label for="cms-post-title">Title</label>
-        <input type="text" id="cms-post-title" placeholder="e.g. Navigating Transitions">
+        <input type="text" id="cms-post-title" placeholder="e.g. Navigating Transitions" value="${isEditing ? escapeHtml(postToEdit.title) : ''}">
       </div>
       
       <div class="cms-form-group">
         <label for="cms-post-date-input">Publish Date</label>
-        <input type="date" id="cms-post-date-input" value="${today}">
+        <input type="date" id="cms-post-date-input" value="${isEditing ? postToEdit.date : today}">
       </div>
 
       <div class="cms-form-group">
-        <label for="cms-post-excerpt-input">Excerpt / Summary</label>
-        <input type="text" id="cms-post-excerpt-input" placeholder="A short summary of the article...">
+        <label for="cms-post-excerpt-input">Author</label>
+        <input type="text" id="cms-post-excerpt-input" placeholder="e.g. Alice Kim, LICSW" value="${isEditing ? escapeHtml(postToEdit.author || 'Alice Kim, LICSW') : 'Alice Kim, LICSW'}">
       </div>
 
       <div class="cms-form-group">
         <label>Cover Image</label>
         <input type="file" id="cms-post-image-file" accept="image/*">
         <div style="font-size: 11px; margin-top: 4px; color: #5a6951;">Or enter direct URL below:</div>
-        <input type="text" id="cms-post-image-url" placeholder="e.g. Assets/karsten-wurth-unsplash.jpg">
+        <input type="text" id="cms-post-image-url" placeholder="e.g. Assets/karsten-wurth-unsplash.jpg" value="${isEditing ? escapeHtml(postToEdit.image || '') : ''}">
         <div id="cms-post-img-progress" style="font-size: 11px; color: #5a6951; display: none; margin-top: 4px;">Uploading...</div>
       </div>
 
@@ -1157,7 +1171,7 @@
 
       <div class="cms-modal-actions">
         <button class="cms-modal-btn" id="cms-post-cancel">Cancel</button>
-        <button class="cms-modal-btn cms-modal-btn-primary" id="cms-post-publish">Publish Post</button>
+        <button class="cms-modal-btn cms-modal-btn-primary" id="cms-post-publish">${isEditing ? 'Save Changes' : 'Publish Post'}</button>
       </div>
     `;
 
@@ -1174,6 +1188,10 @@
     const publishBtn = backdrop.querySelector('#cms-post-publish');
     const cancelBtn = backdrop.querySelector('#cms-post-cancel');
     const errorDiv = backdrop.querySelector('#cms-post-error');
+
+    if (isEditing) {
+      bodyInput.value = postToEdit.content;
+    }
 
     titleInput.focus();
 
@@ -1208,15 +1226,7 @@
           }
         }
 
-        // Extract first paragraph as Excerpt
-        const firstP = doc.querySelector('p');
-        if (firstP) {
-          let excerptText = firstP.textContent.trim();
-          if (excerptText.length > 150) {
-            excerptText = excerptText.substring(0, 147) + '...';
-          }
-          excerptInput.value = excerptText;
-        }
+
 
         // The rest is content
         bodyInput.value = doc.body.innerHTML.trim();
@@ -1289,11 +1299,11 @@
       errorDiv.style.display = 'none';
       const title = titleInput.value.trim();
       const date = dateInput.value;
-      const excerpt = excerptInput.value.trim();
+      const author = excerptInput.value.trim() || 'Alice Kim, LICSW';
       const content = bodyInput.value.trim();
       const image = urlInput.value.trim() || uploadedImgPath;
 
-      if (!title || !date || !excerpt || !content) {
+      if (!title || !date || !author || !content) {
         errorDiv.innerText = 'Please fill out all fields.';
         errorDiv.style.display = 'block';
         return;
@@ -1306,11 +1316,10 @@
       }
 
       publishBtn.disabled = true;
-      publishBtn.innerText = 'Publishing...';
-      showToast('Publishing new post...', 'info', 0);
+      publishBtn.innerText = isEditing ? 'Saving...' : 'Publishing...';
+      showToast(isEditing ? 'Saving changes...' : 'Publishing new post...', 'info', 0);
 
       try {
-        // Generate unique slug
         const slug = title.toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, '');
@@ -1318,45 +1327,81 @@
         // Fetch current posts database
         const { content: posts, sha } = await fetchRepoFile('posts.json');
 
-        // Check if slug already exists
-        if (posts.some(p => p.id === slug)) {
-          throw new Error('A post with a similar title already exists. Please change the title.');
+        if (isEditing) {
+          // Find the post
+          const postIdx = posts.findIndex(p => p.id === postToEdit.id);
+          if (postIdx === -1) {
+            throw new Error('Post not found in database.');
+          }
+
+          // Check if slug conflicts with another post
+          if (slug !== postToEdit.id && posts.some(p => p.id === slug)) {
+            throw new Error('A post with a similar title already exists. Please choose a unique title.');
+          }
+
+          // Update post properties
+          posts[postIdx] = {
+            id: slug,
+            title,
+            date,
+            author,
+            image,
+            content
+          };
+
+          // Save back to GitHub
+          await commitRepoFile('posts.json', posts, sha, `CMS: Edit post "${title}"`);
+
+          // Close modal & toast success
+          closeModal('cms-new-post-modal');
+          document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+          showToast('Blog post updated successfully! Redirecting...');
+
+          // Navigate to post page (in case slug changed or to reload content)
+          setTimeout(() => {
+            window.location.href = `post.html?id=${slug}`;
+          }, 1500);
+
+        } else {
+          // Check if slug already exists
+          if (posts.some(p => p.id === slug)) {
+            throw new Error('A post with a similar title already exists. Please change the title.');
+          }
+
+          // Add new post
+          const newPost = {
+            id: slug,
+            title,
+            date,
+            author,
+            image,
+            content
+          };
+
+          // Put new post at the beginning of the list (newest first)
+          posts.unshift(newPost);
+
+          // Save back to GitHub
+          await commitRepoFile('posts.json', posts, sha, `CMS: Publish new post "${title}"`);
+
+          // Close modal & toast success
+          closeModal('cms-new-post-modal');
+          document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+          showToast('Blog post published successfully! Redirecting...');
+
+          // Navigate to new post page
+          setTimeout(() => {
+            window.location.href = `post.html?id=${slug}`;
+          }, 1500);
         }
-
-        // Add new post
-        const newPost = {
-          id: slug,
-          title,
-          date,
-          excerpt,
-          image,
-          content
-        };
-
-        // Put new post at the beginning of the list (newest first)
-        posts.unshift(newPost);
-
-        // Save back to GitHub
-        await commitRepoFile('posts.json', posts, sha, `CMS: Publish new post "${title}"`);
-
-        // Close modal & toast success
-        closeModal('cms-new-post-modal');
-        // Clear active informational toasts
-        document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
-        showToast('Blog post published successfully! Redirecting...');
-
-        // Navigate to new post page
-        setTimeout(() => {
-          window.location.href = `post.html?id=${slug}`;
-        }, 1500);
 
       } catch (err) {
         document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
         errorDiv.innerText = err.message;
         errorDiv.style.display = 'block';
         publishBtn.disabled = false;
-        publishBtn.innerText = 'Publish Post';
-        showToast(`Failed to publish: ${err.message}`, 'error');
+        publishBtn.innerText = isEditing ? 'Save Changes' : 'Publish Post';
+        showToast(isEditing ? `Failed to save: ${err.message}` : `Failed to publish: ${err.message}`, 'error');
       }
     });
 
@@ -1364,6 +1409,42 @@
   }
 
   window.showNewPostModal = showNewPostModal;
+
+  // --- EDIT SINGLE BLOG POST IN POPUP ---
+  async function editCurrentPost() {
+    if (!githubToken) {
+      showToast('GitHub token missing. Please configure it in settings.', 'error');
+      showSettingsModal();
+      return;
+    }
+
+    if (activeEditable) {
+      stopEditingText(activeEditable);
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+    if (!postId) {
+      showToast('Could not resolve blog post ID.', 'error');
+      return;
+    }
+
+    showToast('Loading post data...', 'info', 0);
+
+    try {
+      const { content: posts } = await fetchRepoFile('posts.json');
+      const post = posts.find(p => p.id === postId);
+      if (!post) {
+        throw new Error('Blog post not found in database.');
+      }
+
+      document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+      showNewPostModal(post);
+    } catch (err) {
+      document.querySelectorAll('.cms-toast-info').forEach(t => t.remove());
+      showToast(`Failed to load post data: ${err.message}`, 'error', 6000);
+    }
+  }
 
   // --- SAVE SINGLE BLOG POST UPDATES FROM DOM ---
   async function publishPostUpdates() {
@@ -1401,7 +1482,7 @@
       // 3. Read DOM values
       const title = document.getElementById('post-title').innerText.trim();
       const dateText = document.getElementById('post-date').innerText.trim();
-      const excerpt = document.getElementById('post-excerpt').innerText.trim();
+      const author = document.getElementById('post-excerpt').innerText.trim();
       const content = document.getElementById('post-content').innerHTML.trim();
       
       const imgEl = document.getElementById('post-image');
@@ -1423,7 +1504,7 @@
       // Update post in the list
       posts[postIdx].title = title;
       posts[postIdx].date = date;
-      posts[postIdx].excerpt = excerpt;
+      posts[postIdx].author = author;
       posts[postIdx].image = image;
       posts[postIdx].content = content;
 

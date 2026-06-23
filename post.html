@@ -219,7 +219,7 @@
           document.title = `${post.title} | Alice Kim Coaching & Counseling`;
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-date').innerText = new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-          document.getElementById('post-excerpt').innerText = post.excerpt;
+          document.getElementById('post-excerpt').innerText = post.author || 'Alice Kim, LICSW';
           
           const imgEl = document.getElementById('post-image');
           if (post.image) {
