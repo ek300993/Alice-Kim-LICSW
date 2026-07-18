@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mental Health Blog | Life Transition Insights</title>
-  <meta name="description" content="Practical insights for managing life transitions, anxiety, and personal growth from Alice Kim, LICSW. Practical tips for your well-being.">
+  <meta name="description"
+    content="Practical insights for managing life transitions, anxiety, and personal growth from Alice Kim, LICSW. Practical tips for your well-being.">
   <link rel="icon" type="image/png" href="Assets/AliceKimCoaching&CounselingIcon.png">
   <link rel="stylesheet" href="styles.css">
   <!-- Privacy-friendly analytics by Plausible -->
@@ -18,7 +19,8 @@
     .blog-card {
       cursor: pointer;
       overflow: hidden;
-      padding: 0 !important; /* Let image bleed */
+      padding: 0 !important;
+      /* Let image bleed */
       display: flex;
       flex-direction: column;
       border: 1px solid rgba(216, 214, 192, 0.4);
@@ -27,29 +29,37 @@
       box-shadow: var(--shadow-ambient);
       transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
+
     .blog-card:hover {
       transform: translateY(-6px);
       box-shadow: var(--shadow-hover) !important;
     }
+
     .blog-card:hover .blog-card-img {
       transform: scale(1.05);
     }
+
     .blog-card:hover .blog-card-title {
       color: var(--color-primary) !important;
     }
+
     .blog-card:hover .blog-card-link .arrow {
       transform: translateX(4px);
     }
+
     #cms-grid-add-card:hover .add-icon {
       transform: scale(1.15) rotate(90deg);
       color: var(--color-secondary) !important;
     }
+
     #cms-grid-add-card:hover h3 {
       color: var(--color-secondary) !important;
     }
+
     .blog-card-img {
       border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
     }
+
     .cms-edit-card-btn {
       padding: 6px 14px;
       font-size: 12px;
@@ -63,6 +73,7 @@
       font-family: 'Inter', sans-serif;
       z-index: 10;
     }
+
     .cms-edit-card-btn:hover {
       background: var(--color-primary);
       color: #ffffff;
@@ -112,9 +123,11 @@
         <li><a href="/services">Services</a></li>
         <li><a href="/faq">FAQ</a></li>
         <li><a href="/blog" class="active">Blog</a></li>
-        <li class="mobile-only"><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="btn btn-primary">Schedule a Free 15 Minute Consultation</a></li>
+        <li class="mobile-only"><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank"
+            class="btn btn-primary">Schedule a Free 15 Minute Consultation</a></li>
       </ul>
-      <a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="btn btn-primary nav-cta-desktop">Schedule a Free 15 Minute Consultation</a>
+      <a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank"
+        class="btn btn-primary nav-cta-desktop">Schedule a Free 15 Minute Consultation</a>
       <button class="menu-toggle" aria-label="Toggle navigation">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -124,9 +137,11 @@
   </nav>
 
   <!-- Page Header -->
-  <header class="banner-header" style="background-image: url('Assets/Blog-Header.jpg'); background-position: center 33%;">
+  <header class="banner-header"
+    style="background-image: url('Assets/Blog-Header.jpg'); background-position: center 33%;">
     <div class="container">
-      <h1>Life Transitions Blog &amp; Perspectives</h1>
+      <h1> Life Transitions: Clinical Perspective and Practical Insights on Change and Growth
+      </h1>
     </div>
   </header>
 
@@ -134,8 +149,10 @@
   <section class="pt-0">
     <div class="container">
       <div class="text-center mb-5 text-container">
-        <h2>Insights for the Journey</h2>
-        <p>A collection of articles, resources, and reflections to support you in navigating career transitions, relational changes, and daily emotional well-being.</p>
+        <h2>Resources and Perspectives</h2>
+        <p>A collection of articles and resources to support you in navigating transitions, relational changes, and
+          daily emotional well-being.
+        </p>
       </div>
 
       <div class="grid-3" id="blog-posts-grid">
@@ -174,8 +191,10 @@
         <div>
           <h4 class="footer-heading">Get Started</h4>
           <ul class="footer-links-list">
-            <li><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="footer-link">Schedule a Free 15 Minute Consultation</a></li>
-            <li><a href="https://www.linkedin.com/in/alice-kimlicsw/" target="_blank" class="footer-link">LinkedIn</a></li>
+            <li><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="footer-link">Schedule a
+                Free 15 Minute Consultation</a></li>
+            <li><a href="https://www.linkedin.com/in/alice-kimlicsw/" target="_blank" class="footer-link">LinkedIn</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -183,7 +202,8 @@
       <div class="footer-bottom">
         <div class="footer-bottom-flex">
           <p>&copy; 2025 Alice Kim LICSW Counseling. All Rights Reserved.</p>
-          <p><a href="#" id="editor-login" class="footer-link" style="font-size: 12px; opacity: 0.5;">Editor Login</a></p>
+          <p><a href="#" id="editor-login" class="footer-link" style="font-size: 12px; opacity: 0.5;">Editor Login</a>
+          </p>
         </div>
       </div>
     </div>
@@ -202,18 +222,18 @@
             'Authorization': `token ${githubToken}`
           }
         })
-        .then(res => {
-          if (!res.ok) throw new Error('GitHub API fetch failed');
-          return res.json();
-        })
-        .then(data => {
-          const content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
-          return JSON.parse(content);
-        })
-        .catch(err => {
-          console.warn('Failed to fetch from GitHub API, falling back to static file:', err);
-          return fetch('posts.json?t=' + Date.now()).then(res => res.json());
-        });
+          .then(res => {
+            if (!res.ok) throw new Error('GitHub API fetch failed');
+            return res.json();
+          })
+          .then(data => {
+            const content = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+            return JSON.parse(content);
+          })
+          .catch(err => {
+            console.warn('Failed to fetch from GitHub API, falling back to static file:', err);
+            return fetch('posts.json?t=' + Date.now()).then(res => res.json());
+          });
       } else {
         postsPromise = fetch('posts.json?t=' + Date.now()).then(res => res.json());
       }
@@ -237,13 +257,13 @@
             addCard.style.background = 'rgba(138, 154, 128, 0.03)';
             addCard.style.minHeight = '380px';
             addCard.style.textAlign = 'center';
-            
+
             addCard.innerHTML = `
               <div style="font-size: 54px; color: #245359; line-height: 1; margin-bottom: 16px; font-weight: 300; transition: transform 0.3s ease;" class="add-icon">+</div>
               <h3 style="font-size: 20px; color: #245359; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-weight: 600; transition: color 0.3s ease;">Add New Blog Post</h3>
               <p style="font-size: 14px; color: #404849; margin: 0; line-height: 1.4; max-width: 240px; opacity: 0.8;">Click here to open the creation editor and publish a new post.</p>
             `;
-            
+
             addCard.addEventListener('click', (e) => {
               e.stopPropagation();
               if (window.showNewPostModal) {
@@ -264,7 +284,7 @@
             card.className = 'card blog-card';
             card.style.display = 'flex';
             card.style.flexDirection = 'column';
-            
+
             card.innerHTML = `
               ${post.image ? `
                 <div style="width: 100%; height: 220px; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
@@ -287,7 +307,7 @@
                 </div>
               </div>
             `;
-            
+
             card.addEventListener('click', (e) => {
               if (e.target.closest('.cms-edit-card-btn')) return;
               window.location.href = `post.html?id=${post.id}`;
@@ -304,7 +324,7 @@
                 });
               }
             }
-            
+
             container.appendChild(card);
           });
         })
