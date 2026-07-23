@@ -407,6 +407,11 @@
     styleEl.textContent = cmsStyles;
     document.head.appendChild(styleEl);
 
+    // Inject mammoth.js for DOCX conversion
+    const mammothScript = document.createElement('script');
+    mammothScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+    document.head.appendChild(mammothScript);
+
     // Bind Footer link listener
     const footerLink = document.getElementById('editor-login');
     if (footerLink) {
@@ -1132,6 +1137,12 @@
       
       ${!isEditing ? `
       <div class="cms-form-group">
+        <label for="cms-post-docx" style="color: var(--color-primary-dark); font-weight: bold;">[Optional] Auto-Fill from Word Document (.docx)</label>
+        <input type="file" id="cms-post-docx" accept=".docx" style="padding: 8px; border: 1px dashed #245359; border-radius: 8px; background: rgba(138, 154, 128, 0.05); font-family: var(--font-body); font-size: 13px;">
+        <div id="cms-docx-progress" style="font-size: 11px; color: #5a6951; display: none; margin-top: 4px;">Reading file...</div>
+      </div>
+      
+      <div class="cms-form-group">
         <label for="cms-post-autofill" style="color: var(--color-primary-dark); font-weight: bold;">[Optional] Auto-Fill from HTML Paste</label>
         <textarea id="cms-post-autofill" rows="3" style="padding: 10px; border: 1px dashed #245359; border-radius: 8px; font-family: var(--font-body); font-size: 13px; width: 100%; resize: vertical;" placeholder="Paste raw HTML here (will auto-extract Title, Cover Image, Excerpt, and Body content below)..."></textarea>
       </div>
@@ -1194,6 +1205,107 @@
     }
 
     titleInput.focus();
+
+    // DOCX parser
+    const docxInput = backdrop.querySelector('#cms-post-docx');
+    const docxProgress = backdrop.querySelector('#cms-docx-progress');
+    if (docxInput) {
+      docxInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        if (!window.mammoth) {
+          errorDiv.innerText = 'Mammoth library is still loading or failed to load. Try again in a second.';
+          errorDiv.style.display = 'block';
+          return;
+        }
+
+        if (!githubToken) {
+          errorDiv.innerText = 'Please configure your GitHub token in settings first to upload images from the document.';
+          errorDiv.style.display = 'block';
+          docxInput.value = '';
+          return;
+        }
+
+        errorDiv.style.display = 'none';
+        docxProgress.innerText = 'Reading document and extracting images...';
+        docxProgress.style.display = 'block';
+        publishBtn.disabled = true;
+
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          
+          let firstImageUrl = null;
+          
+          const options = {
+            convertImage: mammoth.images.inline(async function(element) {
+              return element.read("base64").then(async function(imageBuffer) {
+                const extension = element.contentType.split('/')[1] || 'png';
+                const filename = `uploaded_${Date.now()}_${Math.random().toString(36).substring(7)}.${extension}`;
+                const uploadPath = `Assets/${filename}`;
+                
+                try {
+                  const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${uploadPath}`, {
+                    method: 'PUT',
+                    headers: {
+                      'Authorization': `token ${githubToken}`,
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      message: `CMS: Upload extracted docx image ${filename}`,
+                      content: imageBuffer,
+                      branch: REPO_BRANCH
+                    })
+                  });
+                  
+                  if (!res.ok) {
+                    console.error('Failed to upload image', await res.json());
+                    return {src: `data:${element.contentType};base64,${imageBuffer}`}; // Fallback to base64
+                  }
+                  
+                  if (!firstImageUrl) firstImageUrl = uploadPath;
+                  return {src: uploadPath};
+                } catch (err) {
+                  console.error(err);
+                  return {src: `data:${element.contentType};base64,${imageBuffer}`};
+                }
+              });
+            })
+          };
+
+          const result = await mammoth.convertToHtml({arrayBuffer: arrayBuffer}, options);
+          const rawHtml = result.value; 
+
+          // Extract title if empty
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(rawHtml, 'text/html');
+          const h1 = doc.querySelector('h1');
+          if (h1 && !titleInput.value) {
+            titleInput.value = h1.textContent.trim();
+            h1.remove(); // Remove from body
+          } else if (!titleInput.value) {
+            // Use filename minus extension
+            titleInput.value = file.name.replace(/\.[^/.]+$/, "");
+          }
+
+          if (firstImageUrl && !urlInput.value) {
+            urlInput.value = firstImageUrl;
+          }
+
+          // Format body (mammoth tends to make very simple HTML)
+          bodyInput.value = doc.body.innerHTML.trim();
+
+          docxProgress.innerText = 'Document imported successfully!';
+          showToast('Document parsed successfully! Fields populated.', 'info');
+        } catch (err) {
+          errorDiv.innerText = `Error processing document: ${err.message}`;
+          errorDiv.style.display = 'block';
+          docxProgress.style.display = 'none';
+        } finally {
+          publishBtn.disabled = false;
+        }
+      });
+    }
 
     // Auto-fill parser
     const autofillInput = backdrop.querySelector('#cms-post-autofill');
