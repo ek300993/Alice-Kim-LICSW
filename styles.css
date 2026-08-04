@@ -218,6 +218,58 @@ section {
 
 .focus-panel .column-heading {
   margin-top: 0;
+  /* The gap under the heading lives inside .focus-content so it collapses too */
+  margin-bottom: 0;
+}
+
+/* The heading doubles as the collapse toggle */
+.focus-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.focus-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.focus-icon {
+  flex-shrink: 0;
+  color: var(--color-secondary);
+  transition: transform 0.3s ease;
+}
+
+.focus-panel.is-open .focus-icon {
+  transform: rotate(180deg);
+}
+
+.focus-content {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+}
+
+.focus-panel.is-open .focus-content {
+  max-height: 2400px;
+  padding-top: 0.75rem;
+}
+
+/* Held back until after the first paint so the panels that start collapsed
+   don't animate shut on load. */
+body.focus-ready .focus-content {
+  transition: max-height 0.35s ease, padding-top 0.35s ease;
 }
 
 /* Two columns inside the full-width panel: keeps the line length comfortable
