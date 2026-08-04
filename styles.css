@@ -206,6 +206,47 @@ section {
   border-bottom: 2px solid var(--color-primary-dark);
 }
 
+/* Groups a themed list into its own panel so a long run of items reads as
+   several scannable blocks rather than one undifferentiated wall of text.
+   Tinted rather than white so it stays distinct from the cards below it. */
+.focus-panel {
+  background: rgba(138, 154, 128, 0.06);
+  border: 1px solid rgba(138, 154, 128, 0.18);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.focus-panel .column-heading {
+  margin-top: 0;
+}
+
+/* Two columns inside the full-width panel: keeps the line length comfortable
+   and halves the height, without squeezing the text the way three
+   side-by-side panels did. Column flow rather than a two-column grid, so
+   items pack tightly instead of leaving a gap under the shorter one in a row. */
+.focus-panel .styled-list {
+  columns: 2;
+  column-gap: var(--space-5);
+  margin-bottom: 0;
+}
+
+.focus-panel .styled-list li {
+  break-inside: avoid;
+  margin-bottom: var(--space-2);
+}
+
+@media (max-width: 900px) {
+  .focus-panel .styled-list {
+    columns: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .focus-panel {
+    padding: var(--space-3);
+  }
+}
+
 /* Label / value rows that sit under a .column-heading */
 .detail-list {
   display: flex;
