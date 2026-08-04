@@ -1019,6 +1019,12 @@ footer h3 {
   }
 }
 
+/* A list's last item should not add a trailing margin, which otherwise
+   stacks on top of the section padding as invisible dead space. */
+section ul > li:last-child {
+  margin-bottom: 0;
+}
+
 /* Utility */
 .text-center {
   text-align: center;
