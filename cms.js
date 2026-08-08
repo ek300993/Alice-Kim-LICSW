@@ -809,7 +809,7 @@
     const images = document.querySelectorAll('img');
     images.forEach(img => {
       // Skip nav and footer and CMS logos
-      if (img.closest('nav') || img.closest('footer') || img.closest('#cms-control-panel') || img.closest('.cms-modal') || img.src.includes('AliceKimCoaching&CounselingIcon.png')) {
+      if (img.closest('nav') || img.closest('footer') || img.closest('#cms-control-panel') || img.closest('.cms-modal') || img.src.includes('AliceKimCounselingIcon.png')) {
         return;
       }
 
