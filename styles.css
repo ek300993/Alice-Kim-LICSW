@@ -357,6 +357,14 @@ body.focus-ready .focus-content {
   color: var(--color-primary-dark);
 }
 
+/* Emphasis inside ordinary body copy. A bare <strong> renders at the browser
+   default weight in the body colour, which reads as a different kind of bold
+   from the lead-ins in styled lists and FAQ answers. This matches those. */
+.copy-emphasis {
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
 /* Variant for lists placed on the dark primary background */
 .styled-list-invert li::before {
   color: var(--color-tertiary);
