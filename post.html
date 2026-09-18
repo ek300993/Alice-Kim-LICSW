@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Article | Alice Kim Counseling</title>
   <link rel="icon" type="image/png" href="Assets/AliceKimCounselingIcon.png">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-TtsMHUYlnLQ8aZ5XsKdrV.js"></script>
   <script>
@@ -57,31 +57,62 @@
     }
   </style>
 
-  <!-- LocalBusiness Schema -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": ["ProfessionalService", "LocalBusiness"],
-    "name": "Alice Kim, LICSW Life Transitions Counseling",
-    "image": "https://www.alicekimlicsw.com/Assets/Headshot.jpg",
-    "url": "https://www.alicekimlicsw.com",
-    "email": "info@alicekimlicsw.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "1051 Beacon Street, Suite 510",
-      "addressLocality": "Brookline",
-      "addressRegion": "MA",
-      "postalCode": "02446",
-      "addressCountry": "US"
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://alicekimlicsw.com/#practice",
+  "name": "Alice Kim, LICSW Life Transition Counseling & Therapy",
+  "url": "https://alicekimlicsw.com/",
+  "image": "https://alicekimlicsw.com/Assets/Headshot.jpg",
+  "email": "info@alicekimlicsw.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1051 Beacon Street, Suite 510",
+    "addressLocality": "Brookline",
+    "addressRegion": "MA",
+    "postalCode": "02446",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    {
+      "@type": "AdministrativeArea",
+      "name": "Massachusetts"
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 42.3444,
-      "longitude": -71.1167
+    {
+      "@type": "AdministrativeArea",
+      "name": "Connecticut"
     },
-    "description": "Compassionate, evidence-based counseling to support you in the transitions of life. Virtual & in-person sessions available in Brookline, MA.",
-    "openingHours": "Mo,Tu,We,Th,Fr 09:00-17:00"
+    {
+      "@type": "AdministrativeArea",
+      "name": "Maine"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "New Hampshire"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Vermont"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Washington, DC"
+    }
+  ],
+  "description": "Life transition counseling and therapy. In-person sessions in Brookline and Cambridge, Massachusetts, and telehealth for clients in MA, CT, ME, NH, VT and DC.",
+  "founder": {
+    "@type": "Person",
+    "@id": "https://alicekimlicsw.com/about#alice-kim",
+    "name": "Alice Kim",
+    "honorificSuffix": "LICSW",
+    "url": "https://alicekimlicsw.com/about",
+    "jobTitle": "Psychotherapist",
+    "sameAs": [
+      "https://www.linkedin.com/in/alice-kimlicsw/"
+    ]
   }
+}
   </script>
 </head>
 
@@ -206,6 +237,7 @@
     </div>
   </footer>
 
+  <script src="article-seo.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -245,9 +277,11 @@
 
       postsPromise
         .then(posts => {
-          const post = posts.find(p => p.id === postId);
+          const post = window.articleSEO.findPost(posts, postId);
           
           if (!post) {
+            window.articleSEO.markUnavailable('Article Not Found');
+            document.getElementById('post-date').style.display = 'none';
             document.getElementById('post-title').innerText = 'Article Not Found';
             document.getElementById('post-excerpt').style.display = 'none';
             document.getElementById('post-image-section').style.display = 'none';
@@ -259,7 +293,12 @@
           }
 
           // Render Post Content
-          document.title = `${post.title} | Alice Kim Coaching & Counseling`;
+          window.articleSEO.renderMetadata(post);
+          // Normalize known old slugs without discarding other query parameters.
+          if (post.id !== postId) {
+            urlParams.set('id', post.id);
+            history.replaceState(null, '', `${location.pathname}?${urlParams}${location.hash}`);
+          }
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-date').innerText = new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
           document.getElementById('post-excerpt').innerText = post.author || 'Alice Kim, LICSW';
@@ -276,6 +315,10 @@
         })
         .catch(err => {
           console.error('Error loading article:', err);
+          document.title = 'Error Loading Article | Alice Kim, LICSW';
+          document.getElementById('post-date').style.display = 'none';
+          document.getElementById('post-excerpt').style.display = 'none';
+          document.getElementById('post-image-section').style.display = 'none';
           document.getElementById('post-title').innerText = 'Error Loading Article';
           document.getElementById('post-content').innerHTML = '<p>Something went wrong while retrieving the article. Please try again later.</p>';
         });

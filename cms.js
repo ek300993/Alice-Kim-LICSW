@@ -1432,7 +1432,7 @@
       showToast(isEditing ? 'Saving changes...' : 'Publishing new post...', 'info', 0);
 
       try {
-        const slug = title.toLowerCase()
+        const slug = isEditing ? postToEdit.id : title.toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, '');
 
@@ -1453,6 +1453,7 @@
 
           // Update post properties
           posts[postIdx] = {
+            ...posts[postIdx],
             id: slug,
             title,
             date,
