@@ -17,3 +17,24 @@ The five main pages have canonical and social metadata directly in their HTML. A
 After deployment, verify `/robots.txt`, `/sitemap.xml`, the four legacy page redirects, and both old article IDs. Then submit `https://alicekimlicsw.com/sitemap.xml` in Search Console and inspect the key pages. The legacy page files use immediate HTML refresh redirects compatible with static hosting, not server-side HTTP 301 responses. The old `/untitled` URL remains unmapped because its intended replacement is unknown.
 
 Private analytics and the review report are stored outside this public site's repository.
+
+## September 18 discovery pages
+
+Four static landing pages cover Harvard Square in-person therapy, multistate online therapy, culturally responsive care with an Asian American therapist, and anxiety, stress and burnout therapy. Keep their fees, service locations, credentials and scheduling information aligned with the main pages. The discovery generator and validation script include these pages. On September 19, the owner confirmed the Cambridge office as 22 Hilliard St, Cambridge, MA 02138. This is now visible on the location page, all public footers and in the practice's structured location data. No current availability claim has been added.
+
+Growth strategy and referral outreach artifacts under `output/growth-plan/` and `output/pdf/alice-kim-growth-and-outreach-plan.pdf` are local planning materials, not website content; exclude them from a public deployment.
+
+## September 19 delivery
+
+The homepage now states the $250 / 50-minute private-pay fee near the consultation action. All ten public templates link to the four discovery pages. The generated sitemap contains 13 URLs (nine static destinations and four article URLs). Existing article content still requires JavaScript; static article generation is documented as the next technical improvement.
+
+Run `python3 tools/package-public-site.py` to prepare `output/website/alice-kim-public-site.zip` using an explicit public-file list. This excludes planning materials, QA files, DOCX documents, the old site folder, and Git history. It does not publish anything or change the GitHub Pages source configuration. When deploying from the repository, select only website changes and the four discovery HTML files; do not stage the output or tmp folders.
+
+Validation: three existing Node tests and the SEO validator pass. Local browser review covered the home and four discovery pages at 390px and 1440px, with one H1 per page, no horizontal overflow, the confirmed address and consultation links present. Public deployment, Search Console indexing, Business Profile settings and booking-conversion tracking remain unverified.
+
+
+## September 20 approved release
+
+The approved Version 2 review copy has been transferred into the public templates. The homepage keeps the $250 / 50-minute fee, placed below the telehealth information, and clarifies private pay and out-of-network service. The four discovery pages include Alice's final wording; the mental-health page now explicitly covers anxiety, depression, ADHD, stress and life transitions. Footers place Harvard Square before Brookline, omit Suite 510, and use consistent discovery labels. Production analytics and the existing editor remain enabled; review controls and noindex metadata are excluded.
+
+The separate client review site preserves Versions 1 and 2 and hosts a shareable before-and-after SEO summary. Its feedback database and report files are not part of this public website repository. Search Console submission, indexing verification, full article prerendering and booking-conversion measurement remain follow-up work.

@@ -21,24 +21,29 @@ class Page(HTMLParser):
         if tag=='script' and self.script is not None:
             self.scripts.append(self.script); self.script=None
 
-for name in ['index', 'about', 'services', 'faq', 'blog', 'post']:
+for name in ['index', 'about', 'services', 'faq', 'blog', 'post', 'therapy-cambridge-harvard-square', 'online-therapy', 'asian-american-therapist', 'anxiety-stress-burnout-therapy']:
     page=Page((ROOT / (name+'.html')).read_text())
     if name != 'post':
         canonical=[a['href'] for t,a in page.tags if t=='link' and a.get('rel')=='canonical']
         assert canonical == ['https://alicekimlicsw.com'+('/' if name=='index' else '/'+name)], (name,canonical)
         assert len([a for t,a in page.tags if t=='meta' and a.get('name')=='description'])==1
+    footer=(ROOT / (name+'.html')).read_text().split('<footer>')[1]
+    assert '22 Hilliard St' in footer and 'Cambridge, MA 02138' in footer, name
+    for route in ['therapy-cambridge-harvard-square','online-therapy','asian-american-therapist','anxiety-stress-burnout-therapy']:
+        assert 'href="/'+route+'"' in footer, (name,route)
     for attrs, script in page.scripts:
         if attrs.get('type')=='application/ld+json':
             schema=json.loads(script)
             assert schema['url']=='https://alicekimlicsw.com/'
             assert len(schema['areaServed'])==6
             assert 'openingHours' not in schema
+            assert {p['address']['addressLocality'] for p in schema['location']} == {'Cambridge','Brookline'}
         elif script.strip():
             with tempfile.NamedTemporaryFile(suffix='.js',mode='w') as f:
                 f.write(script); f.flush()
                 subprocess.run(['node','--check',f.name],check=True,capture_output=True)
 posts=json.loads((ROOT/'posts.json').read_text())
-expected={'https://alicekimlicsw.com'+path for path in ['/', '/about', '/services', '/faq', '/blog']}
+expected={'https://alicekimlicsw.com'+path for path in ['/', '/about', '/services', '/faq', '/blog', '/therapy-cambridge-harvard-square', '/online-therapy', '/asian-american-therapist', '/anxiety-stress-burnout-therapy']}
 expected.update('https://alicekimlicsw.com/post.html?id='+p['id'] for p in posts)
 sitemap=ET.parse(ROOT/'sitemap.xml')
 urls=[e.text for e in sitemap.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
@@ -51,4 +56,4 @@ assert len(all_ids)==len(set(all_ids))
 for old,target in {'home-2':'/','about-2':'/about','services-2':'/services','faq-2':'/faq'}.items():
     page=Page((ROOT/(old+'.html')).read_text())
     assert any(t=='meta' and a.get('http-equiv')=='refresh' and a['content']=='0; url='+target for t,a in page.tags)
-print('PASS: six pages, JSON-LD, inline JS, nine sitemap URLs, four fallback article links, four legacy redirects.')
+print('PASS: ten pages, JSON-LD, inline JS, thirteen sitemap URLs, four fallback article links, four legacy redirects.')

@@ -9,7 +9,7 @@ import re
 ROOT = Path(__file__).resolve().parent.parent
 ORIGIN = 'https://alicekimlicsw.com'
 posts = json.loads((ROOT / 'posts.json').read_text())
-urls = [ORIGIN + path for path in ['/', '/about', '/services', '/faq', '/blog']]
+urls = [ORIGIN + path for path in ['/', '/about', '/services', '/faq', '/blog', '/therapy-cambridge-harvard-square', '/online-therapy', '/asian-american-therapist', '/anxiety-stress-burnout-therapy']]
 urls += [ORIGIN + '/post.html?id=' + quote(post['id'], safe='') for post in posts]
 xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
 xml += ''.join('  <url><loc>' + escape(url) + '</loc></url>\n' for url in urls)

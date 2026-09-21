@@ -6,13 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Article | Alice Kim Counseling</title>
   <link rel="icon" type="image/png" href="Assets/AliceKimCounselingIcon.png">
-  <link rel="stylesheet" href="styles.css?v=3">
-  <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://plausible.io/js/pa-TtsMHUYlnLQ8aZ5XsKdrV.js"></script>
-  <script>
-    window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) }, plausible.init = plausible.init || function (i) { plausible.o = i || {} };
-    plausible.init()
-  </script>
+  <link rel="stylesheet" href="styles.css?v=5">
   <style>
     .article-header {
       padding-top: 140px;
@@ -68,7 +62,7 @@
   "email": "info@alicekimlicsw.com",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "1051 Beacon Street, Suite 510",
+    "streetAddress": "1051 Beacon Street",
     "addressLocality": "Brookline",
     "addressRegion": "MA",
     "postalCode": "02446",
@@ -111,8 +105,40 @@
     "sameAs": [
       "https://www.linkedin.com/in/alice-kimlicsw/"
     ]
-  }
+  },
+  "location": [
+    {
+      "@type": "Place",
+      "name": "Harvard Square, Cambridge office",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "22 Hilliard St",
+        "addressLocality": "Cambridge",
+        "addressRegion": "MA",
+        "postalCode": "02138",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@type": "Place",
+      "name": "Brookline office",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1051 Beacon Street",
+        "addressLocality": "Brookline",
+        "addressRegion": "MA",
+        "postalCode": "02446",
+        "addressCountry": "US"
+      }
+    }
+  ]
 }
+  </script>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-TtsMHUYlnLQ8aZ5XsKdrV.js"></script>
+  <script>
+    window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) }, plausible.init = plausible.init || function (i) { plausible.o = i || {} };
+    plausible.init()
   </script>
 </head>
 
@@ -146,11 +172,11 @@
   <header class="article-header">
     <div class="article-container">
       <a href="/blog" class="btn btn-secondary mb-4" style="padding: 0.5rem 1.25rem; font-size: 14px; border-radius: var(--radius-full);">&larr; Back to Blog</a>
-      
+
       <div id="post-date" style="font-size: 14px; font-weight: 700; color: var(--color-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;">
         Loading date...
       </div>
-      
+
       <h1 id="post-title" style="margin-bottom: 1.5rem; font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.15;">
         Loading article title...
       </h1>
@@ -186,8 +212,9 @@
           <p class="footer-contact mt-3">
             <a href="mailto:info@alicekimlicsw.com" class="footer-link">info@alicekimlicsw.com</a>
             <br>
-            <span class="mt-2" style="display: inline-block;">1051 Beacon Street, Suite 510<br>Brookline, MA
-              02446</span>
+            <span class="mt-2" style="display: inline-block;">22 Hilliard Street<br>Harvard Square<br>Cambridge, MA 02138</span>
+            <br>
+            <span class="mt-2" style="display: inline-block;">1051 Beacon Street<br>Brookline, MA 02446</span>
           </p>
         </div>
 
@@ -195,10 +222,14 @@
           <h4 class="footer-heading">Quick Links</h4>
           <ul class="footer-links-list">
             <li><a href="/" class="footer-link">Home</a></li>
-            <li><a href="/about" class="footer-link">About</a></li>
+            <li><a href="/about" class="footer-link">About Alice</a></li>
             <li><a href="/services" class="footer-link">Services</a></li>
             <li><a href="/faq" class="footer-link">FAQ</a></li>
             <li><a href="/blog" class="footer-link">Blog</a></li>
+            <li><a href="/therapy-cambridge-harvard-square" class="footer-link">In Person Therapy in Harvard Square</a></li>
+            <li><a href="/online-therapy" class="footer-link">Online Therapy</a></li>
+            <li><a href="/asian-american-therapist" class="footer-link">Asian American therapist</a></li>
+            <li><a href="/anxiety-stress-burnout-therapy" class="footer-link">Anxiety, Depression, ADHD, Stress &amp; Life Transitions</a></li>
           </ul>
         </div>
 
@@ -278,7 +309,7 @@
       postsPromise
         .then(posts => {
           const post = window.articleSEO.findPost(posts, postId);
-          
+
           if (!post) {
             window.articleSEO.markUnavailable('Article Not Found');
             document.getElementById('post-date').style.display = 'none';
@@ -302,7 +333,7 @@
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-date').innerText = new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
           document.getElementById('post-excerpt').innerText = post.author || 'Alice Kim, LICSW';
-          
+
           const imgEl = document.getElementById('post-image');
           if (post.image) {
             imgEl.src = post.image;
@@ -325,6 +356,7 @@
     });
   </script>
   <script src="script.js"></script>
+
   <script src="cms.js"></script>
 </body>
 
