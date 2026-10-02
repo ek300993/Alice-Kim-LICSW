@@ -494,6 +494,8 @@ nav {
 }
 
 .footer-logo {
+  width: 292px;
+  padding: 3px 0;
   filter: brightness(0) invert(1);
 }
 
