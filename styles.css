@@ -813,6 +813,18 @@ a.btn-primary:hover {
 }
 
 .testimonial-carousel {
+  --edge-fade: clamp(32px, 5vw, 72px);
+  --edge-mask: linear-gradient(to right,
+    transparent,
+    rgba(0, 0, 0, 0.15) calc(var(--edge-fade) * 0.25),
+    rgba(0, 0, 0, 0.5) calc(var(--edge-fade) * 0.5),
+    rgba(0, 0, 0, 0.85) calc(var(--edge-fade) * 0.75),
+    black var(--edge-fade),
+    black calc(100% - var(--edge-fade)),
+    rgba(0, 0, 0, 0.85) calc(100% - var(--edge-fade) * 0.75),
+    rgba(0, 0, 0, 0.5) calc(100% - var(--edge-fade) * 0.5),
+    rgba(0, 0, 0, 0.15) calc(100% - var(--edge-fade) * 0.25),
+    transparent);
   display: flex;
   flex-wrap: nowrap;
   gap: 2rem;
@@ -826,8 +838,8 @@ a.btn-primary:hover {
   /* Firefox */
   -ms-overflow-style: none;
   /* IE and Edge */
-  -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
-  mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+  -webkit-mask-image: var(--edge-mask);
+  mask-image: var(--edge-mask);
 }
 
 .testimonial-carousel::-webkit-scrollbar {
