@@ -487,9 +487,16 @@ nav {
 
 .nav-brand img,
 .footer-logo {
-  height: 50px;
-  width: auto;
-  object-fit: contain;
+  /* Frame the artwork within the supplied PNG's transparent canvas. */
+  width: 332px;
+  height: auto;
+  aspect-ratio: 7 / 1;
+  object-fit: cover;
+  object-position: center 51.9%;
+}
+
+.footer-logo {
+  filter: brightness(0) invert(1);
 }
 
 .nav-brand img,
