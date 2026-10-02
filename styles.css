@@ -487,12 +487,10 @@ nav {
 
 .nav-brand img,
 .footer-logo {
-  /* Frame the artwork within the supplied PNG's transparent canvas. */
+  /* The image is tightly cropped; all surrounding space belongs to the site. */
   width: 332px;
   height: auto;
-  aspect-ratio: 7 / 1;
-  object-fit: cover;
-  object-position: center 51.9%;
+  padding: 3px 20px;
 }
 
 .footer-logo {
@@ -1276,7 +1274,7 @@ footer h3 {
   .nav-brand img {
     width: 232px;
     height: auto;
-    max-height: 40px;
+    padding: 2px 14px;
   }
 
   .nav-brand {
