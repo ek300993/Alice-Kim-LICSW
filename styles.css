@@ -2082,3 +2082,28 @@ button:focus-visible {
 @media (max-width: 759px) {
   .home-help-topics, .home-focus-list { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Shared type scale across public pages; labels and secondary details stay smaller. */
+:root {
+  --text-title: clamp(2.25rem, 4.5vw, 3.5rem);
+  --text-section: clamp(1.875rem, 3vw, 2.25rem);
+  --text-subheading: 1.5rem;
+  --text-body: 1.125rem;
+  --text-small: 1rem;
+}
+body { font-size: var(--text-body); }
+h1, .hero-content h1, .banner-header h1, .discovery-copy h1 {
+  font-size: var(--text-title); line-height: 1.15; font-weight: 500;
+}
+h2, .aligned-page h2, .contact-intro h2,
+.aligned-page .home-experience h2, .consultation-card > h2 {
+  font-size: var(--text-section); line-height: 1.2; font-weight: 500;
+}
+h3, .transition-questions h3, .transition-topic h3,
+.support-card-grid h3, .session-fee-row h3, .service-card-intro h4 {
+  font-size: var(--text-subheading); line-height: 1.3; font-weight: 500;
+}
+.transition-questions p, .transition-topic p, .therapy-availability p {
+  font-size: var(--text-body); line-height: 1.7;
+}
+.eyebrow, .credentials-bar { font-weight: 600; }
