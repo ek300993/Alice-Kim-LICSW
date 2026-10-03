@@ -374,27 +374,30 @@ body.focus-ready .focus-content {
   margin-bottom: 0;
 }
 
-.styled-list strong {
-  font-weight: 600;
-  color: var(--color-primary-dark);
-}
-
-/* Emphasis inside ordinary body copy. A bare <strong> renders at the browser
-   default weight in the body colour, which reads as a different kind of bold
-   from the lead-ins in styled lists and FAQ answers. This matches those. */
+/* Consistent bold emphasis in every page and dynamically loaded article. */
+strong,
+b,
 .copy-emphasis {
   font-weight: 600;
-  color: var(--color-primary-dark);
+  color: var(--color-emphasis, var(--color-primary-dark));
 }
+
+strong a,
+b a { color: inherit; }
+
+/* The same blue emphasis uses a lighter tint on dark surfaces. */
+.home-intro-card,
+.consultation-card,
+.hero,
+.banner-header,
+footer { --color-emphasis: #c4e5ec; }
 
 /* Variant for lists placed on the dark primary background */
 .styled-list-invert li::before {
   color: var(--color-tertiary);
 }
 
-.styled-list-invert strong {
-  color: #ffffff;
-}
+.styled-list-invert { --color-emphasis: #c4e5ec; }
 
 /* Client question paired with the list item above it */
 .list-quote {
@@ -1558,11 +1561,6 @@ section ul > li:last-child {
 
 .accordion-content p {
   margin-bottom: 1.25rem;
-}
-
-.accordion-content strong {
-  font-weight: 600;
-  color: var(--color-primary-dark);
 }
 
 .accordion-content ul {
