@@ -16,7 +16,7 @@
   <meta property="og:image:alt" content="Alice Kim, LICSW">
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" href="Assets/AliceKimCounselingIcon.png">
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=27">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="use-credentials">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="stylesheet"
@@ -114,7 +114,7 @@
   </script>
 </head>
 
-<body>
+<body class="aligned-page home-page">
 
   <!-- Navigation -->
   <nav>
@@ -123,16 +123,16 @@
         <img src="Assets/AliceKimLICSWLogo-cropped.png" alt="Alice Kim LICSW Life Transition Counseling &amp; Therapy">
       </a>
       <ul class="nav-links">
-        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/" class="active" aria-current="page">Home</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/services">Services</a></li>
         <li><a href="/faq">FAQ</a></li>
         <li><a href="/blog">Blog</a></li>
         <li class="mobile-only"><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank"
-            class="btn btn-primary">Schedule a Free 15 Minute Consultation</a></li>
+            class="btn btn-primary">Schedule a Free Consultation</a></li>
       </ul>
       <a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank"
-        class="btn btn-primary nav-cta-desktop">Schedule a Free 15 Minute Consultation</a>
+        class="btn btn-primary nav-cta-desktop">Schedule a Free Consultation</a>
       <button class="menu-toggle" aria-label="Toggle navigation">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -148,18 +148,13 @@
     <div class="container hero-container">
       <div class="hero-content">
         <h1 class="" style="margin-bottom: 1rem;">Life Transition Counseling & Therapy</h1>
-        <p class="hero-lead">Experience that meets you where you are.</p>
-        <p class="">With 25+ years of clinical experience, I help you navigate life’s biggest challenges, find clarity
-          in uncertainty, and move toward what matters most. Thoughtful, compassionate care for life transitions,
-          stress, anxiety, burnout, grief, and the moments when you feel stuck.
-        </p>
+
+        <p class="">You’re used to handling it all. Sometimes, a change calls for something different: space to slow down, reflect on what matters, and find your way forward.</p>
         <div class="hero-actions">
-          <a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="btn btn-primary">Schedule a
-            Free 15 Minute Consultation to Learn More</a>
+          <a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="btn btn-primary">Schedule a Free Consultation</a>
           <a href="#contact" class="btn btn-secondary hero-btn-secondary">Have a question?</a>
         </div>
-        <p class="hero-note">Telehealth for clients located in Massachusetts, Connecticut, Maine, New Hampshire,
-          Vermont, and Washington, DC.<br>Office located in Harvard Square. In-person sessions available in Boston, Cambridge, Brookline, and surrounding communities.</p>
+        <p class="hero-note">Telehealth for clients located in Massachusetts, Connecticut, Maine, New Hampshire, Vermont, and Washington, DC. Office located in Harvard Square.</p>
         <p class="hero-fee">Individual therapy · $250 per 50-minute session · Private Pay and Out of Network</p>
       </div>
     </div>
@@ -169,57 +164,105 @@
   <section class="section-surface">
     <div class="container">
 
+      <div class="home-experience">
+        <h2>Experience that meets you where you are.</h2>
+        <p>Drawing on 25+ years of clinical experience, we’ll find new perspectives, develop practical tools, and create a steady space as you navigate uncertainty.</p>
+        <p>Thoughtful, compassionate care for life transitions, stress, anxiety, burnout, grief, and the moments when you feel stuck.</p>
+      </div>
+
       <!-- About Teaser -->
-      <div class="card mb-6"
-        style="background-color: var(--color-primary-dark); color: var(--color-background); border: none;">
-        <h2 style="color: var(--color-background);" class="">How Can I Help?</h2>
-        <div class="credentials-bar">
-          <span>25+ Years Experience</span>
-          <span class="pipe">|</span>
-          <span>Asian American Psychotherapist, LICSW</span>
-          <span class="pipe">|</span>
-          <span>Adjunct Professor at Boston College</span>
-          <span class="pipe">|</span>
-          <span>Transitional Intelligence (TQ) Certified</span>
-        </div>
-        <div class="about-teaser">
-          <div class="portrait-card about-teaser-portrait"
-            style="background-color: rgba(253, 249, 241, 0.05); border-color: rgba(253, 249, 241, 0.1);">
-            <img src="Assets/Headshot.jpg" alt="Headshot of Alice Kim">
+      <div class="card home-intro-card">
+        <div class="home-intro-content">
+          <h2 style="color: var(--color-background);">How Can I Help?</h2>
+          <div class="credentials-bar">
+            <span>25+ Years of Clinical Experience</span>
+            <span>Asian American Psychotherapist, LICSW</span>
+            <span>Adjunct Professor at Boston College</span>
+            <span>Transitional Intelligence (TQ) Certified</span>
           </div>
-          <p style="color: rgba(253, 249, 241, 0.9);">I work with people who are used to carrying a lot: living up to expectations, holding things together, and being the one others rely on. When life changes, the ways you’ve always navigated life may no longer fit.</p>
-          <p style="color: rgba(253, 249, 241, 0.9);">Together, we make sense of what you’re experiencing, understand what’s keeping you stuck, and figure out what comes next. I combine clinical support with practical tools to help you:</p>
-          <ul class="styled-list styled-list-invert" style="color: rgba(253, 249, 241, 0.9);">
-  <li><strong>Make sense of your emotions:</strong> Understand what you’re feeling rather than ignoring, avoiding, or fighting it.</li>
-  <li><strong>Reconnect with what is important:</strong> Clarify your needs and values, beyond what is expected of you.</li>
-  <li><strong>Strengthen your well-being:</strong> Develop practical skills to navigate stress, anxiety, depression, and burnout.</li>
-  <li><strong>Take meaningful steps forward:</strong> Recognize patterns that leave you feeling stuck and develop strategies to move toward what matters.</li>
-</ul>
-          <a href="/about" class="btn btn-secondary mt-3"
-            style="border-color: var(--color-background); color: var(--color-background);">Learn More About My
-            Approach</a>
+          <p>I work with people who are used to carrying a lot: living up to expectations, holding things together, and being the one others rely on. When life changes, the ways you’ve always navigated life may no longer fit.</p>
+        </div>
+        <div class="home-intro-portrait">
+          <img src="Assets/Headshot.jpg" alt="Headshot of Alice Kim">
+        </div>
+        <div class="home-intro-details">
+          <p>Together, we make sense of what you’re experiencing, understand what may be keeping you stuck, and figure out what comes next. I combine clinical support with practical tools to help you:</p>
+          <ul class="styled-list styled-list-invert home-help-topics">
+            <li><strong>Make sense of your emotions:</strong> Understand what you’re feeling rather than ignoring, avoiding, or fighting it.</li>
+            <li><strong>Reconnect with what is important:</strong> Clarify your needs and values beyond what is expected of you.</li>
+            <li><strong>Strengthen your well-being:</strong> Develop practical skills to navigate stress, anxiety, depression, and burnout.</li>
+            <li><strong>Take meaningful steps forward:</strong> Recognize patterns that leave you feeling stuck and develop strategies to move toward what matters.</li>
+          </ul>
+          <a href="/about" class="btn btn-secondary mt-3" style="border-color: var(--color-background); color: var(--color-background);">Get to Know Alice</a>
         </div>
       </div>
 
       <!-- The Challenge -->
-      <div class="mb-6">
-<h2>Find Your Way Through Change</h2>
-<p>Change is part of life. But knowing change is coming doesn’t always make it easier to navigate. Some changes we choose and look forward to; others happen to us, often when we least expect them.</p>
-<p><strong class="copy-emphasis">A transition isn’t necessarily the event itself.</strong> <strong class="copy-emphasis">It’s what happens internally when the old way of living no longer fits.</strong></p>
-<p>You may find yourself questioning who you are, what matters, or where you’re headed. You may know that something needs to shift without knowing exactly what comes next.</p>
-<p>Transitions can bring a complicated mix of emotions: hope and excitement one day, uncertainty and overwhelm the next. Even positive changes can leave you unsettled as you adjust to a new sense of self, new expectations, or an unfamiliar path forward.</p>
-<p><strong class="copy-emphasis">You don’t have to figure it all out at once.</strong> Sometimes, having space to pause, process what’s happening, and clarify your values can help you find a way forward.</p>
-<p>Some of the transitions we can work through include:</p>
-<ul class="styled-list mb-3">
-<li><strong class="copy-emphasis">Life Milestones &amp; Identity Shifts:</strong> Young adulthood, parenthood, midlife, or older adulthood can prompt a reassessment of who you are and what matters to you now.<span class="list-quote">“What is meaningful and purposeful to me in this season of my life?”</span></li>
-<li><strong class="copy-emphasis">Relationship &amp; Family Transitions:</strong> Changes in partnership, caregiving responsibilities, separation, or an empty nest can affect your relationships and sense of self.<span class="list-quote">“How can I honor my needs while staying connected to the people I care about?”</span></li>
-<li><strong class="copy-emphasis">Professional Transitions:</strong> Burnout, career changes, job loss, leadership demands, or a disconnect between your work and values can make the path ahead feel unclear.<span class="list-quote">“Is my professional identity still aligned with what I actually want?”</span></li>
-</ul>
-<p><strong class="copy-emphasis">A transition can be an opportunity to understand yourself more deeply and create a life that feels more intentional and aligned with who you are now.</strong></p>
-<p style="margin-bottom: 0;"><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" rel="noopener"><strong class="copy-emphasis">Reach out wherever you are in your process. Schedule a Free 15 minute Consultation.</strong></a></p>
+      <div class="mt-5 home-change-section">
+        <h2>Life Transition Counseling: Find Your Way Through Change</h2>
+        <div class="home-change-introduction">
+          <p>Change is part of life, but knowing change is coming doesn’t always make it easier to navigate. Some changes are chosen; others happen when we least expect them.</p>
+          <p><strong>A transition isn't just the event itself. It's the internal shift that happens when the way you've been living no longer fits.</strong> You may begin questioning who you are, what matters, or where you're headed.</p>
+          <p>You may know something needs to change without knowing exactly what comes next. A transition can be an opportunity to understand yourself more deeply, reconnect with what matters, and consider what you want this next chapter to look like.</p>
+        </div>
+        <p>Some of the transitions we can work through include:</p>
+        <div class="transition-questions">
+          <div><h3>Life Milestones &amp; Identity Shifts</h3><p>“What is meaningful and purposeful to me in this season of my life?”</p></div>
+          <div><h3>Relationship &amp; Family Transitions</h3><p>“How can I honor my needs while staying connected to the people I care about?”</p></div>
+          <div><h3>Professional Transitions</h3><p>“Is my professional identity still aligned with what I actually want?”</p></div>
+        </div>
+        <p class="home-change-closing"><strong class="copy-emphasis">You don’t have to figure it all out at once.</strong></p>
+        <p class="mt-3"><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" rel="noopener">Reach out wherever you are in your process. Schedule a Free 15-Minute Consultation.</a></p>
       </div>
 
-      <!-- Introduction Video -->
+
+
+    </div>
+  </section>
+
+  <!-- Therapy Overview -->
+  <section aria-labelledby="home-therapy-title">
+    <div class="container">
+      <h2 id="home-therapy-title">Therapy for Mental Health &amp; Life Challenges</h2>
+      <p>Life is complex, and sometimes life transitions and mental health intersect. You may be navigating anxiety, depression, burnout, grief, ADHD, relationship concerns, or stress while also adjusting to changes in your life.</p>
+      <p>Therapy offers a space to understand what's beneath the surface, develop more effective ways of coping, and make meaningful changes.</p>
+      <h3>Support for:</h3>
+      <ul class="styled-list home-focus-list">
+        <li><strong>Anxiety &amp; depression</strong></li>
+        <li><strong>Stress &amp; burnout</strong></li>
+        <li><strong>ADHD &amp; executive functioning</strong></li>
+        <li><strong>Grief &amp; loss</strong></li>
+        <li><strong>Relationships, family &amp; boundaries</strong></li>
+        <li><strong>Life changes &amp; aging</strong></li>
+        <li><strong>Trauma and its impact</strong></li>
+      </ul>
+      <a href="/services" class="btn btn-secondary">Explore Therapy &amp; Areas of Focus</a>
+    </div>
+  </section>
+
+  <section class="section-surface" aria-labelledby="location-access-title">
+    <div class="container">
+      <h2 id="location-access-title">Location &amp; Access</h2>
+      <p>In-person therapy is available in <strong>Harvard Square, Cambridge</strong>, with walk-and-talk options in <strong>Boston, Cambridge, Brookline, and surrounding communities</strong>.</p>
+      <p>Online therapy is available in <strong>Massachusetts, Connecticut, Maine, New Hampshire, Vermont, and Washington, DC</strong>.</p>
+      <div class="home-access-actions">
+        <a href="/therapy-cambridge-harvard-square" class="btn btn-secondary">Explore In-Person Therapy</a>
+        <a href="/online-therapy" class="btn btn-secondary">Explore Online Therapy</a>
+      </div>
+      <div class="card consultation-card home-next-step mt-5">
+        <div>
+          <h2>Take the Next Step</h2>
+          <p>You don’t have to have everything figured out before reaching out.</p>
+        </div>
+        <a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" rel="noopener" class="btn consultation-button">Schedule a Free 15-Minute Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-introduction-video">
+    <div class="container">
+      <div class="home-video-frame">
+        <!-- Introduction Video -->
       <div
         style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-ambient);">
         <iframe src="https://www.youtube.com/embed/G8pqJJ0WvS4?rel=0"
@@ -227,78 +270,6 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen></iframe>
       </div>
-
-    </div>
-  </section>
-
-  <!-- Services Overview -->
-  <section>
-    <div class="container">
-      <div class="text-center mb-4">
-        <div class="eyebrow">My Services</div>
-        <h2 class="">How We Can Work Together</h2>
-      </div>
-
-      <div class="flex-column gap-4">
-        <div class="card">
-          <h3 class="">Life Transition Counseling</h3>
-          <p class="">You may be doing everything you’re supposed to do and still feel uncertain about what’s next.
-            Whether you are struggling to adjust to a major shift or simply feeling the need for growth and clarity, you
-            don’t have to navigate this space alone.</p>
-          <p class="">
-            Transitions can be unsettling. They tend to throw off our daily routines, shake our confidence, and leave us
-            feeling stuck and exhausted. My practice is a steady space where we can process these changes together
-            through:
-          </p>
-          <ul class="styled-list mb-4">
-            <li><strong>Support for the Struggle:</strong> If a recent change has left you feeling overwhelmed, anxious,
-              or unable to function as you normally would, we can work to stabilize your mood, manage your stress, and
-              help you find your footing again.</li>
-            <li><strong>Support for the Shift:</strong> If you are in a period of change and feel that you want to live
-              more intentionally, deepen your self-awareness, and align your daily life with your core values, we can
-              use this time of transition as a catalyst for meaningful growth.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3 class="">Therapy</h3>
-          <p class="">Life can be complex, and sometimes challenges feel persistent. You may notice you are not feeling
-            like yourself, or sense that your usual ways of coping are no longer helping. If you are feeling
-            overwhelmed, emotionally stuck, or weighed down by recurring patterns, therapy provides a compassionate,
-            nonjudgmental space to explore these experiences with curiosity and care.</p>
-          <p class="">Together, we will uncover what is beneath the surface, reduce symptoms that hold you back, and
-            develop more effective ways to manage your emotions, thoughts, and behaviors. This is a safe, supportive
-            space to navigate life's complexities, including:</p>
-          <ul class="styled-list">
-            <li><strong>Everyday Stress &amp; Burnout:</strong> Career pressure, perfectionism, and caregiver fatigue.
-            </li>
-            <li><strong>Relationships &amp; Family:</strong> Couples dynamics, parenting challenges, and
-              boundary-setting.</li>
-            <li><strong>Older Adults &amp; Aging:</strong> Navigating later-life transitions, existential realities, and
-              the emotional impact of mortality.</li>
-            <li><strong>Grief &amp; Loss:</strong> Navigating bereavement, life changes, and chronic health issues.</li>
-            <li><strong>Mental Health Conditions:</strong> Anxiety, depression, panic, ADHD and executive functioning,
-              and processing trauma.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="text-center mt-5">
-        <p class="">Not sure whether counseling or therapy is the right fit? Let's talk. <a
-            href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank">Schedule a free 15 minute
-            consultation</a></p>
-        <a href="/services" class="btn btn-secondary">View All Services</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-surface" aria-labelledby="find-support-title">
-    <div class="container">
-      <h2 id="find-support-title">Find support that fits your life</h2>
-      <div class="grid-2">
-        <div class="card"><h3><a href="/therapy-cambridge-harvard-square">In-Person Therapy in Harvard Square</a></h3><p>Walk-and-talk therapy options are also available in Brookline, Cambridge, and surrounding Greater Boston communities.</p></div>
-        <div class="card"><h3><a href="/online-therapy">Online therapy across six jurisdictions</a></h3><p>Telehealth for clients in Massachusetts, Connecticut, Maine, New Hampshire, Vermont and Washington, DC.</p></div>
-        <div class="card"><h3><a href="/asian-american-therapist">Collaborative, Culturally Responsive Approach</a></h3><p>Whether you are specifically looking for an Asian American therapist or want a therapist who understands that culture and identity can be an important part of your experience, we can begin wherever you are.</p></div>
-        <div class="card"><h3><a href="/anxiety-stress-burnout-therapy">Anxiety, Depression, ADHD, Stress &amp; Life Transitions</a></h3><p>Support for mental health concerns, life transitions, and the moments when the two intersect.</p></div>
       </div>
     </div>
   </section>
@@ -306,7 +277,7 @@
   <!-- Testimonials -->
   <section class="testimonials">
     <div class="container">
-      <div class="text-center mb-4">
+      <div class="mb-4">
         <div class="eyebrow">Endorsements</div>
         <h2 class="">What Colleagues Are Saying</h2>
       </div>
@@ -445,9 +416,9 @@
   <section id="contact" class="contact-section" aria-labelledby="contact-heading">
     <div class="container contact-layout">
       <div class="contact-intro">
-        <div class="eyebrow">Let's Connect</div>
+
         <h2 id="contact-heading">Have questions?</h2>
-        <p>Have a question about availability, fees, or getting started? Send me a note, and we can explore the next step together.</p>
+        <p>Have a question about availability, fees, or getting started?</p>
       </div>
 
       <form id="contact-form" class="contact-form" action="https://formsubmit.co/alice@alicekimlicsw.com" method="POST" aria-labelledby="contact-heading" aria-describedby="contact-privacy-note">
@@ -507,25 +478,14 @@
 
         <div>
           <h4 class="footer-heading">Quick Links</h4>
-          <ul class="footer-links-list">
-            <li><a href="/" class="footer-link">Home</a></li>
-            <li><a href="/about" class="footer-link">About Alice</a></li>
-            <li><a href="/services" class="footer-link">Services</a></li>
-            <li><a href="/faq" class="footer-link">FAQ</a></li>
-            <li><a href="/blog" class="footer-link">Blog</a></li>
-            <li><a href="/therapy-cambridge-harvard-square" class="footer-link">In Person Therapy in Harvard Square</a></li>
-            <li><a href="/online-therapy" class="footer-link">Online Therapy</a></li>
-            <li><a href="/asian-american-therapist" class="footer-link">Asian American therapist</a></li>
-            <li><a href="/anxiety-stress-burnout-therapy" class="footer-link">Anxiety, Depression, ADHD, Stress &amp; Life Transitions</a></li>
-          </ul>
+          <div class="footer-quick-links"><ul class="footer-links-list"><li><a href="/" class="footer-link">Home</a></li><li><a href="/about" class="footer-link">About Alice</a></li><li><a href="/services" class="footer-link">Services</a></li><li><a href="/faq" class="footer-link">FAQ</a></li><li><a href="/blog" class="footer-link">Blog</a></li></ul><ul class="footer-links-list"><li><a href="/therapy-cambridge-harvard-square" class="footer-link">In Person Therapy in Harvard Square</a></li><li><a href="/online-therapy" class="footer-link">Online Therapy</a></li><li><a href="/asian-american-therapist" class="footer-link">Asian American therapist</a></li><li><a href="/anxiety-stress-burnout-therapy" class="footer-link">Anxiety, Depression, ADHD, Stress &amp; Life Transitions</a></li></ul></div>
         </div>
 
         <div>
           <h4 class="footer-heading">Get Started</h4>
           <ul class="footer-links-list">
             <li><a href="/#contact" class="footer-link">Have questions? Get in touch</a></li>
-            <li><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="footer-link">Schedule a
-                Free 15 Minute Consultation</a></li>
+            <li><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="footer-link">Schedule a Free Consultation</a></li>
             <li><a href="https://www.linkedin.com/in/alice-kimlicsw/" target="_blank" class="footer-link">LinkedIn</a>
             </li>
           </ul>
@@ -561,8 +521,7 @@
         </div>
         <div class="footer-bottom-flex">
           <p>© 2025 Alice Kim LICSW Counseling. All Rights Reserved.</p>
-          <p><a href="#" id="editor-login" class="footer-link" style="font-size: 12px; opacity: 0.5;">Editor Login</a>
-          </p>
+          <p><a href="#" id="editor-login" class="footer-link" style="font-size: 12px; opacity: 0.5;">Editor Login</a></p>
         </div>
       </div>
     </div>
@@ -627,6 +586,7 @@
     });
   </script>
   <script src="script.js?v=2"></script>
+
 
 
 

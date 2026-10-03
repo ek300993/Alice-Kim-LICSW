@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=EB+Garamond:wght@400;500;600&display=swap');
 
 /* Search landing pages use the same calm typography as the main practice site. */
 .discovery-main { padding-top: 112px; }
@@ -29,7 +29,7 @@
   --color-tertiary: #D8D6C0;
 
   /* Typography */
-  --font-heading: 'Newsreader', serif;
+  --font-heading: 'EB Garamond', serif;
   --font-body: 'Inter', sans-serif;
 
   /* Spacing */
@@ -49,6 +49,7 @@
   --space-5: 3rem;
   --space-6: 4rem;
   --space-8: 6rem;
+  --card-padding: clamp(1.25rem, 2vw, 1.75rem) clamp(1.25rem, 2.5vw, 2rem);
 
   /* Border Radius */
   --radius-sm: 0.25rem;
@@ -234,7 +235,7 @@ section {
   background: rgba(138, 154, 128, 0.06);
   border: 1px solid rgba(138, 154, 128, 0.18);
   border-radius: var(--radius-lg);
-  padding: var(--space-4);
+  padding: var(--card-padding);
 }
 
 .focus-panel .column-heading {
@@ -316,7 +317,7 @@ body.focus-ready .focus-content {
 
 @media (max-width: 767px) {
   .focus-panel {
-    padding: var(--space-3);
+    padding: var(--card-padding);
   }
 }
 
@@ -687,6 +688,7 @@ a.btn-primary:hover {
 }
 
 .hero-btn-secondary {
+  background-color: rgba(255, 255, 255, 0.2);
   border-color: #ffffff;
   color: #ffffff;
 }
@@ -759,7 +761,7 @@ a.btn-primary:hover {
 .card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
-  padding: 3rem;
+  padding: var(--card-padding);
   box-shadow: var(--shadow-ambient);
   border: 1px solid rgba(216, 214, 192, 0.4);
 }
@@ -850,7 +852,7 @@ a.btn-primary:hover {
 }
 
 .testimonial-carousel>* {
-  flex: 0 0 420px;
+  flex: 0 0 480px;
   max-width: 85vw;
   scroll-snap-align: center;
 }
@@ -866,7 +868,7 @@ a.btn-primary:hover {
 
 .testimonial-card {
   background-color: var(--color-background);
-  padding: 2.5rem;
+  padding: var(--card-padding);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(62, 107, 113, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
@@ -1363,7 +1365,7 @@ footer h3 {
   }
 
   .card {
-    padding: 1.5rem;
+    padding: var(--card-padding);
   }
 
   .banner-header {
@@ -1378,7 +1380,7 @@ footer h3 {
   }
 
   .testimonial-card {
-    padding: 1.5rem;
+    padding: var(--card-padding);
   }
 
   .testimonial-carousel > * {
@@ -1708,4 +1710,375 @@ button:focus-visible {
     opacity: 1;
     transform: none;
   }
+}
+
+/* The concise homepage keeps related services together when space allows. */
+.home-service-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  align-items: stretch;
+}
+
+.home-video-frame {
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .home-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-service-grid > .card {
+    padding: var(--card-padding);
+  }
+}
+
+/* Cards follow their available width instead of fixed desktop dimensions. */
+.card > p { margin-bottom: 1rem; }
+.card > :last-child { margin-bottom: 0; }
+.card > .mt-4 { margin-top: 1.25rem; }
+.card > .pt-3 { padding-top: 1rem; }
+.blog-card { padding: 0; }
+.blog-card > div,
+#blog-posts-grid .blog-card-body { padding: var(--card-padding) !important; }
+
+/* Summary content stays grouped at every card width. */
+.service-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+}
+.service-detail-grid > * { min-width: 0; }
+.service-card-slot { container-type: inline-size; }
+.service-summary-card {
+  --color-secondary: var(--color-secondary-dark);
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+  text-align: left;
+}
+.service-card-intro h4 {
+  font-size: 1.375rem;
+  line-height: 1.35;
+  margin: 0;
+  text-wrap: balance;
+}
+.service-card-intro p { margin: .75rem 0 0; }
+.service-card-details {
+  border-top: 1px solid var(--color-tertiary);
+  padding-top: 1.25rem;
+}
+.service-price,
+.workshop-price {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  color: var(--color-primary-dark);
+  line-height: 1.1;
+}
+.service-price { font-size: 3rem; }
+.workshop-price { font-size: 2rem; }
+.service-duration,
+.workshop-availability { margin-top: .5rem; color: var(--color-text-light); }
+.service-payment { margin-top: .75rem; color: var(--color-text-light); }
+.service-card-details > .btn { margin-top: 1.25rem; width: 100%; }
+
+@container (min-width: 560px) {
+  .service-summary-card {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .service-card-details {
+    border-top: 0;
+    border-left: 1px solid var(--color-tertiary);
+    padding: 0 0 0 1.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .service-detail-grid {
+    grid-template-columns: minmax(0, 1.55fr) minmax(17rem, 1fr);
+  }
+}
+
+/* Related cards share a row when their content has enough reading width. */
+.support-card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+.support-card-grid > .card { min-width: 0; }
+.support-card-grid h3 { font-size: 1.5rem; line-height: 1.3; margin-bottom: .75rem; }
+.support-card-grid p { font-size: 1rem; line-height: 1.65; }
+@media (min-width: 760px) {
+  .support-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.consultation-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  background: var(--color-primary-dark);
+  border: none;
+  box-shadow: none;
+  text-align: center;
+}
+.consultation-card > h2 { margin: 0; color: #ffffff; font-size: clamp(2rem, 3.5vw, 2.75rem); line-height: 1.2; }
+.consultation-card .consultation-button {
+  margin: 0;
+  background: #fbf8f0;
+  color: #21545c;
+  border: 2px solid #fbf8f0;
+  padding: .875rem 1.75rem;
+  font-weight: 600;
+  max-width: 100%;
+  white-space: normal;
+}
+.consultation-card .consultation-button:hover { background: #e4ece7; border-color: #e4ece7; }
+.consultation-card .consultation-button:focus-visible { outline: 2px solid #ffffff; outline-offset: 5px; }
+
+.blog-card { display: flex; flex-direction: column; overflow: hidden; }
+.blog-card > div { display: flex; flex-direction: column; flex: 1; }
+.blog-card > div > .blog-card-link { margin-top: auto; padding-top: 1rem; }
+.testimonial-quote { margin-bottom: 1.25rem; }
+.testimonial-author-wrapper { padding-top: 1rem; gap: .75rem; align-items: flex-start; }
+.testimonial-author-info { min-width: 0; }
+
+.home-service-grid > .card { height: 100%; }
+.home-service-grid .styled-list li { margin-bottom: .75rem; line-height: 1.6; }
+.home-service-grid .styled-list { margin-bottom: 0; }
+
+/* Plain category navigation and a single reading column. */
+.transition-section-heading { max-width: 46rem; margin-bottom: 2rem; }
+.transition-section-heading p { margin: 0; }
+.transition-tabs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+.transition-tablist { display: flex; flex-direction: column; align-self: start; gap: .25rem; border-left: 1px solid #c8d2cb; }
+.transition-tablist button { font: inherit; font-size: 1rem; font-weight: 600; line-height: 1.45; text-align: left; padding: .875rem 1rem; min-height: 48px; border: 0; border-left: 3px solid transparent; margin-left: -1px; background: transparent; color: #526969; cursor: pointer; }
+.transition-tablist button[aria-selected="true"] { color: #21545c; border-left-color: #21545c; background: #eaf0eb; }
+.transition-tablist button:hover { color: #21545c; background: #f0f3ef; }
+.transition-tablist button:focus-visible, .transition-panel:focus-visible { outline: 2px solid #21545c; outline-offset: 3px; }
+.transition-panel[hidden] { display: none; }
+.transition-topic { padding: 1.25rem 0; border-bottom: 1px solid #dce2dc; }
+.transition-topic:first-child { padding-top: 0; }
+.transition-topic:last-child { border-bottom: 0; padding-bottom: 0; }
+.transition-topic h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 500; line-height: 1.3; margin: 0 0 .5rem; }
+.transition-topic p { font-size: 1rem; line-height: 1.65; margin: 0; max-width: 65ch; }
+@media (min-width: 760px) {
+  .transition-tabs { grid-template-columns: minmax(13rem, 1fr) minmax(0, 2.4fr); gap: clamp(2rem, 4vw, 3.5rem); }
+}
+
+.blog-card > .blog-card-media { padding: 0 !important; flex: 0 0 220px; }
+.blog-card-img { border-radius: 0; }
+
+.workshop-price-card.card-sage {
+  background: #ffffff;
+  border-color: #6f8988;
+  color: #243b40;
+}
+.workshop-price-card .workshop-availability { color: #344e53; }
+.workshop-price-card .btn-secondary {
+  background: #21545c;
+  border-color: #21545c;
+  color: #ffffff;
+}
+.workshop-price-card .btn-secondary:hover { background: #173f45; border-color: #173f45; }
+
+/* Original centered fee-card styling with compact responsive spacing. */
+.session-price-card {
+  background: #ffffff;
+  border: 1px solid var(--color-tertiary);
+  box-shadow: var(--shadow-ambient);
+  gap: 1.25rem;
+  text-align: center;
+}
+.session-price-card .service-card-intro h4 {
+  font-family: var(--font-heading);
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.session-price-card .service-card-details { padding: 0; border: 0; }
+.session-rate .service-price { font-size: 3rem; line-height: 1.1; }
+.session-rate .service-duration { margin-top: .5rem; font-size: .9375rem; color: var(--color-secondary-dark); }
+.session-price-card .service-payment { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-tertiary); font-size: .875rem; color: var(--color-text-light); }
+
+/* Keep the short introduction and fee together; details span the section below. */
+.therapy-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+.therapy-detail-grid > * { min-width: 0; }
+.therapy-introduction { align-self: center; }
+.therapy-introduction p:last-child { margin-bottom: 0; }
+.therapy-topics { display: grid; gap: 1rem 2.5rem; margin: 0; }
+.therapy-topics li { margin: 0; line-height: 1.65; }
+.therapy-availability { border-top: 1px solid var(--color-tertiary); padding-top: 1.5rem; }
+.therapy-availability p { font-size: 1rem; line-height: 1.65; }
+.therapy-availability p:last-child { margin-bottom: 0; }
+@media (min-width: 700px) {
+  .therapy-detail-grid { grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 1fr); gap: 2rem 2.5rem; }
+  .therapy-topics, .therapy-availability { grid-column: 1 / -1; }
+  .therapy-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .therapy-topics li:last-child { grid-column: 1 / -1; }
+}
+
+/* One left-aligned heading rhythm across the two edited pages. */
+.aligned-page h1, .aligned-page h2 { text-align: left; }
+.aligned-page h2 { font-size: clamp(2rem, 2.6vw, 2.25rem); line-height: 1.2; }
+.home-page .hero { text-align: left; }
+.home-page .hero-content, .home-page .hero-content h1, .home-page .hero-content p { margin-left: 0; margin-right: 0; }
+.home-page .hero-actions { justify-content: flex-start; }
+.aligned-page .banner-header .container { text-align: left; }
+.aligned-page .consultation-card { align-items: flex-start; text-align: left; }
+.aligned-page .consultation-card h2 { width: 100%; }
+
+.home-change-section { width: 100%; max-width: none; }
+.therapy-detail-grid { grid-template-columns: minmax(0, 1fr); }
+.session-fee-row { display: grid; gap: 1rem; align-items: center; padding-top: 1.5rem; border-top: 1px solid var(--color-tertiary); }
+.session-fee-row h3 { font-size: 1.375rem; line-height: 1.35; margin: 0; }
+.session-fee-rate { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1rem; }
+.session-fee-rate span:first-child { font-family: var(--font-heading); font-size: 2.5rem; line-height: 1; color: var(--color-primary-dark); }
+.session-fee-rate span:last-child, .session-fee-row > p { font-size: .9375rem; color: var(--color-text-light); margin: 0; }
+@media (min-width: 760px) {
+  .session-fee-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; gap: 1.5rem; }
+  .session-fee-rate { flex-direction: column; align-items: flex-start; gap: .375rem; }
+}
+
+/* Portrait forms the side of the introduction rather than floating within its copy. */
+.home-intro-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  padding: 0;
+  overflow: hidden;
+  background: var(--color-primary-dark);
+  color: var(--color-background);
+  border: 0;
+}
+.home-intro-content { padding: clamp(1.5rem, 3vw, 2.5rem); min-width: 0; }
+.home-intro-content .credentials-bar { margin-bottom: 1.5rem; }
+.home-intro-content .styled-list { margin-bottom: 0; }
+.home-intro-portrait { position: relative; min-width: 0; overflow: hidden; }
+.home-intro-portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+@media (max-width: 759px) {
+  .home-intro-card { grid-template-columns: minmax(0, 1fr); }
+  .home-intro-portrait { grid-row: 1; height: clamp(280px, 85vw, 420px); }
+  .home-intro-portrait img { object-position: 50% 35%; }
+}
+
+/* Tabs sit above their unboxed content. */
+.transition-tabs { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+.transition-tablist { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 0; border-bottom: 1px solid #c8d2cb; gap: .5rem; }
+.transition-tablist button { margin: 0 0 -1px; border-left: 0; border-bottom: 3px solid transparent; padding: .875rem .75rem; }
+.transition-tablist button[aria-selected="true"] { border-bottom-color: #21545c; }
+.transition-panel:not([hidden]) { animation: transition-panel-fade 220ms ease-out; }
+@keyframes transition-panel-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 599px) {
+  .transition-tablist { grid-template-columns: minmax(0, 1fr); border-bottom: 0; border-left: 1px solid #c8d2cb; gap: .25rem; }
+  .transition-tablist button { margin: 0 0 0 -1px; border-bottom: 0; border-left: 3px solid transparent; }
+  .transition-tablist button[aria-selected="true"] { border-left-color: #21545c; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .transition-panel:not([hidden]) { animation: none; }
+}
+
+.session-fee-row { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+.session-fee-description h3 { margin-bottom: .5rem; }
+.session-fee-description p { font-size: .9375rem; color: var(--color-text-light); margin: 0; }
+@media (min-width: 600px) {
+  .session-fee-row { grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; }
+  .session-fee-rate { flex-direction: column; align-items: flex-end; gap: .375rem; }
+}
+
+/* Give the final invitation a clear destination and gentle visual depth. */
+.aligned-page .consultation-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  min-height: 190px;
+  background: linear-gradient(115deg, #173f45, #285b60);
+}
+.consultation-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 25rem;
+  height: 25rem;
+  right: -4rem;
+  top: -12rem;
+  border: 1px solid rgba(241, 234, 211, .18);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3rem rgba(241, 234, 211, .035), 0 0 0 6rem rgba(241, 234, 211, .025);
+  pointer-events: none;
+}
+.consultation-card .consultation-button { display: inline-flex; align-items: center; justify-content: center; gap: 1rem; }
+.consultation-button svg { width: 1.1rem; height: 1.1rem; flex-shrink: 0; transition: transform 180ms ease; }
+.consultation-button:hover svg { transform: translateX(3px); }
+.home-intro-portrait img { border-radius: 0; }
+@media (max-width: 759px) {
+  .aligned-page .consultation-card { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; min-height: 0; }
+  .consultation-card .consultation-button { justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { .consultation-button svg { transition: none; } }
+
+/* Compact footer navigation keeps all destinations in two readable columns. */
+.footer-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr) minmax(0, .85fr); gap: 2rem; }
+.footer-grid > div { min-width: 0; }
+.footer-heading { margin-bottom: 1rem; }
+.footer-links-list { font-size: 1rem; line-height: 1.5; }
+.footer-links-list li { margin-bottom: .625rem; }
+.footer-quick-links { display: grid; grid-template-columns: minmax(5rem, .65fr) minmax(0, 1.4fr); column-gap: 1.25rem; align-items: start; }
+.footer-quick-links li { margin-bottom: .125rem; }
+.footer-quick-links a { display: inline-block; padding: .3rem 0; }
+@media (max-width: 899px) {
+ .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+ .footer-grid > div:last-child { grid-column: 1 / -1; }
+ .footer-grid > div:last-child .footer-links-list { display: flex; flex-wrap: wrap; gap: .5rem 2rem; }
+}
+@media (max-width: 599px) {
+ .footer-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+}
+
+.banner-header-left, .banner-header-left .container, .banner-header-left h1 { text-align: left; }
+
+.session-fee-description .session-fee-note { margin-bottom: .625rem; max-width: 60ch; }
+
+/* Short, client-focused introduction and reflective transition prompts. */
+.home-experience { margin-bottom: 2rem; }
+.aligned-page .home-experience h2 { font-size: clamp(1.5rem, 2.2vw, 1.875rem); margin-bottom: .75rem; }
+.home-experience p { max-width: 78ch; margin: 0; }
+.home-change-introduction { max-width: 78ch; }
+.home-change-introduction p { margin-bottom: 1rem; }
+.transition-questions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; margin: 1.5rem 0 2rem; }
+.transition-questions > div { border-top: 1px solid var(--color-tertiary); padding-top: 1.25rem; min-width: 0; }
+.transition-questions h3 { font-size: 1.25rem; line-height: 1.35; margin-bottom: .75rem; }
+.transition-questions p { font-size: 1rem; line-height: 1.65; margin: 0; }
+.home-change-closing { max-width: 78ch; margin-bottom: 0; }
+@media (max-width: 799px) { .transition-questions { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; } }
+
+/* Home copy refresh: readable credentials and room for the expanded introduction. */
+.home-experience p + p { margin-top: 1rem; }
+.home-intro-content .credentials-bar { display: grid; gap: .5rem; font-size: .8125rem; }
+.home-intro-content .credentials-bar span:not(.pipe):not(:last-child)::after { content: none; }
+.home-intro-content > p { margin-bottom: 0; }
+.home-intro-details { grid-column: 1 / -1; padding: clamp(1.5rem, 3vw, 2.5rem); border-top: 1px solid rgba(255,255,255,.15); }
+.home-intro-content p, .home-intro-details { color: rgba(253,249,241,.9); }
+.home-help-topics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 2rem; }
+.home-help-topics li { margin-bottom: 0; }
+.home-change-introduction { max-width: none; }
+.home-focus-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 2rem; margin-bottom: 2rem; }
+.home-focus-list li { margin-bottom: 0; }
+.home-access-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+.home-next-step h2 { color: var(--color-background); }
+.home-next-step p { color: rgba(253,249,241,.9); margin-bottom: 0; }
+.services-page h1, .services-page h2, .services-page h3, .services-page h4 { text-align: left; }
+@media (max-width: 759px) {
+  .home-help-topics, .home-focus-list { grid-template-columns: minmax(0, 1fr); }
 }
