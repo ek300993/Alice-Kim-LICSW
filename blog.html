@@ -16,7 +16,7 @@
   <meta property="og:image:alt" content="Alice Kim, LICSW">
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" href="Assets/AliceKimCounselingIcon.png">
-  <link rel="stylesheet" href="styles.css?v=29">
+  <link rel="stylesheet" href="styles.css?v=37">
   <style>
     .blog-card {
       cursor: pointer;
@@ -94,7 +94,7 @@
   "email": "info@alicekimlicsw.com",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "1051 Beacon Street",
+    "streetAddress": "1101 Beacon Street",
     "addressLocality": "Brookline",
     "addressRegion": "MA",
     "postalCode": "02446",
@@ -127,6 +127,19 @@
     }
   ],
   "description": "Life transition counseling and therapy. In-person sessions in Brookline and Cambridge, Massachusetts, and telehealth for clients in MA, CT, ME, NH, VT and DC.",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "opens": "07:00",
+      "closes": "15:00"
+    }
+  ],
   "founder": {
     "@type": "Person",
     "@id": "https://alicekimlicsw.com/about#alice-kim",
@@ -156,7 +169,7 @@
       "name": "Brookline office",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "1051 Beacon Street",
+        "streetAddress": "1101 Beacon Street",
         "addressLocality": "Brookline",
         "addressRegion": "MA",
         "postalCode": "02446",
@@ -205,8 +218,7 @@
   <header class="banner-header banner-header-left"
     style="background-image: url('Assets/Blog-Header.jpg'); background-position: center 33%;">
     <div class="container">
-      <h1> Life Transitions: Practical Insights on Change and Growth
-      </h1>
+      <h1>Life Transitions: Practical Insights on Change and Growth</h1>
     </div>
   </header>
 
@@ -232,7 +244,7 @@
           </div>
         </article>
         <article class="card blog-card">
-          <img src="https://cdn.marblism.com/iFucyNzBHqa.jpeg" alt="When Should I See a Therapist? Understanding How Therapy Can Help with Anxiety, Depression, Stress, Burnout, &amp; Other Mental Health Concerns" loading="lazy" decoding="async" class="blog-card-img" style="width:100%;height:220px;object-fit:cover;">
+          <img src="Assets/blog-when-to-see-a-therapist.jpeg" alt="When Should I See a Therapist? Understanding How Therapy Can Help with Anxiety, Depression, Stress, Burnout, &amp; Other Mental Health Concerns" loading="lazy" decoding="async" class="blog-card-img" style="width:100%;height:220px;object-fit:cover;">
           <div style="padding:2rem;">
             <time datetime="2026-06-23">2026-06-23</time>
             <h3 class="blog-card-title"><a href="/post.html?id=do-i-need-therapy-understanding-how-counseling-can-help-with-anxiety-depression-stress-burnout">When Should I See a Therapist? Understanding How Therapy Can Help with Anxiety, Depression, Stress, Burnout, &amp; Other Mental Health Concerns</a></h3>
@@ -241,7 +253,7 @@
           </div>
         </article>
         <article class="card blog-card">
-          <img src="https://cdn.marblism.com/8eTCsavlgD7.webp" alt="Life Transitions Counseling: Navigating the Shift: Finding Clarity in Life’s Transitions" loading="lazy" decoding="async" class="blog-card-img" style="width:100%;height:220px;object-fit:cover;">
+          <img src="Assets/blog-navigating-the-shift.webp" alt="Life Transitions Counseling: Navigating the Shift: Finding Clarity in Life’s Transitions" loading="lazy" decoding="async" class="blog-card-img" style="width:100%;height:220px;object-fit:cover;">
           <div style="padding:2rem;">
             <time datetime="2026-06-23">2026-06-23</time>
             <h3 class="blog-card-title"><a href="/post.html?id=life-transitions-counseling-navigating-the-internal-shift-with-transitional-intelligence">Life Transitions Counseling: Navigating the Shift: Finding Clarity in Life’s Transitions</a></h3>
@@ -250,7 +262,7 @@
           </div>
         </article>
         <article class="card blog-card">
-          <img src="https://cdn.marblism.com/KS0QdCWyanm.webp" alt="Finding your Way: A Map for Navigating Life’s Transitions" loading="lazy" decoding="async" class="blog-card-img" style="width:100%;height:220px;object-fit:cover;">
+          <img src="Assets/blog-finding-your-way.webp" alt="Finding your Way: A Map for Navigating Life’s Transitions" loading="lazy" decoding="async" class="blog-card-img" style="width:100%;height:220px;object-fit:cover;">
           <div style="padding:2rem;">
             <time datetime="2026-06-16">2026-06-16</time>
             <h3 class="blog-card-title"><a href="/post.html?id=finding-your-way-a-map-for-navigating-life-s-transitions">Finding your Way: A Map for Navigating Life’s Transitions</a></h3>
@@ -272,25 +284,29 @@
           <p class="footer-contact mt-3">
             <a href="mailto:info@alicekimlicsw.com" class="footer-link">info@alicekimlicsw.com</a>
             <br>
-            <span class="mt-2" style="display: inline-block;">22 Hilliard Street<br>Harvard Square<br>Cambridge, MA 02138</span>
-            <br>
-            <span class="mt-2" style="display: inline-block;">1051 Beacon Street<br>Brookline, MA 02446</span>
           </p>
+          <div class="footer-offices">
+            <p><strong>Harvard Square</strong><br>22 Hilliard Street<br>Cambridge, MA 02138</p>
+            <p><strong>Beacon Street</strong><br>1101 Beacon Street<br>Brookline, MA 02446</p>
+          </div>
+          <p class="footer-hours"><strong>Office hours</strong><br>Monday to Thursday, 7:00 a.m. &ndash; 3:00 p.m.</p>
         </div>
 
         <div>
           <h4 class="footer-heading">Quick Links</h4>
-          <div class="footer-quick-links"><ul class="footer-links-list"><li><a href="/" class="footer-link">Home</a></li><li><a href="/about" class="footer-link">About Alice</a></li><li><a href="/services" class="footer-link">Services</a></li><li><a href="/faq" class="footer-link">FAQ</a></li><li><a href="/blog" class="footer-link">Blog</a></li></ul><ul class="footer-links-list"><li><a href="/therapy-cambridge-harvard-square" class="footer-link">In Person Therapy in Harvard Square</a></li><li><a href="/online-therapy" class="footer-link">Online Therapy</a></li><li><a href="/asian-american-therapist" class="footer-link">Asian American therapist</a></li><li><a href="/anxiety-stress-burnout-therapy" class="footer-link">Anxiety, Depression, ADHD, Stress &amp; Life Transitions</a></li></ul></div>
+          <ul class="footer-links-list"><li><a href="/" class="footer-link">Home</a></li><li><a href="/about" class="footer-link">About Alice</a></li><li><a href="/services" class="footer-link">Services</a></li><li><a href="/faq" class="footer-link">FAQ</a></li><li><a href="/blog" class="footer-link">Blog</a></li></ul>
         </div>
 
         <div>
-          <h4 class="footer-heading">Get Started</h4>
-          <ul class="footer-links-list">
-            <li><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" target="_blank" class="footer-link">Schedule a
-                Free 15 Minute Consultation</a></li>
-            <li><a href="https://www.linkedin.com/in/alice-kimlicsw/" target="_blank" class="footer-link">LinkedIn</a>
-            </li>
-          </ul>
+          <h4 class="footer-heading">Areas of Focus</h4>
+          <ul class="footer-links-list"><li><a href="/life-transitions-counseling" class="footer-link">Life Transitions Counseling</a></li><li><a href="/therapy-professionals-high-performance" class="footer-link">Professionals in High Performing Environments</a></li><li><a href="/retirement-transition-therapy" class="footer-link">Retirement &amp; Older Adults</a></li><li><a href="/anxiety-stress-burnout-therapy" class="footer-link">Anxiety, Depression, ADHD, Stress</a></li><li><a href="/asian-american-therapist" class="footer-link">Asian American and Immigrant Experiences</a></li></ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Ways to Meet</h4>
+          <ul class="footer-links-list"><li><a href="/therapy-cambridge-harvard-square" class="footer-link">Harvard Square, Cambridge</a></li><li><a href="/therapy-brookline" class="footer-link">Beacon Street in Brookline</a></li><li><a href="/walk-and-talk-therapy" class="footer-link">Walk-and-Talk Therapy</a></li><li><a href="/online-therapy" class="footer-link">Online Therapy</a></li></ul>
+          <h4 class="footer-heading footer-heading-second">Get Started</h4>
+          <ul class="footer-links-list"><li><a href="https://calendar.app.google/qbh1QrhPGK4TmvFb9" class="footer-link" target="_blank" rel="noopener">Schedule a Free Consultation</a></li><li><a href="/#contact" class="footer-link">Have questions? Get in touch</a></li><li><a href="https://www.linkedin.com/in/alice-kimlicsw/" class="footer-link" target="_blank" rel="noopener">LinkedIn</a></li></ul>
         </div>
       </div>
 

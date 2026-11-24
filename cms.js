@@ -1169,7 +1169,7 @@
         <label>Cover Image</label>
         <input type="file" id="cms-post-image-file" accept="image/*">
         <div style="font-size: 11px; margin-top: 4px; color: #5a6951;">Or enter direct URL below:</div>
-        <input type="text" id="cms-post-image-url" placeholder="e.g. Assets/karsten-wurth-unsplash.jpg" value="${isEditing ? escapeHtml(postToEdit.image || '') : ''}">
+        <input type="text" id="cms-post-image-url" placeholder="e.g. Assets/Blog-Header.jpg" value="${isEditing ? escapeHtml(postToEdit.image || '') : ''}">
         <div id="cms-post-img-progress" style="font-size: 11px; color: #5a6951; display: none; margin-top: 4px;">Uploading...</div>
       </div>
 

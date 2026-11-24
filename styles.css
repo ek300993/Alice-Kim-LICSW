@@ -2,7 +2,7 @@
 
 /* Search landing pages use the same calm typography as the main practice site. */
 .discovery-main { padding-top: 112px; }
-.discovery-copy { max-width: 760px; margin: auto; }
+.discovery-copy { max-width: none; }
 .discovery-copy h1 { font-size: clamp(2.1rem, 5vw, 3.2rem); }
 .discovery-copy h2 { margin-top: 2rem; }
 .discovery-copy p { margin-bottom: 1rem; }
@@ -195,16 +195,12 @@ section {
 }
 
 .text-container {
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: none;
 }
 
-/* Caps long-form copy at a comfortable line length. Unlike .text-container
-   this does not re-centre the block, so it stays flush with the section
-   heading above it instead of drifting into the middle of the container. */
+/* Long-form copy runs the full content width, like every other section. */
 .measure {
-  max-width: 800px;
+  max-width: none;
 }
 
 /* Small uppercase label that sits above a section heading */
@@ -590,7 +586,9 @@ footer .footer-grid img,
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: none;
+  /* Transparent rather than none, so a bordered variant beside an unbordered one
+     is the same height; .btn-secondary only recolours this border. */
+  border: 2px solid transparent;
   text-decoration: none;
   font-family: var(--font-body);
   line-height: 1.5;
@@ -775,13 +773,9 @@ a.btn-primary:hover {
   margin-bottom: 0;
 }
 
-/* Keep the long homepage sections on a shared, comfortable reading measure. */
 .hero + section .container > .mb-6:not(.card),
 .flex-column.gap-4 > .card {
   width: 100%;
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Long article titles need enough space to form balanced rows. */
@@ -984,7 +978,6 @@ a.btn-primary:hover {
 
 .contact-intro > p {
   color: var(--color-text-light);
-  max-width: 760px;
 }
 
 .contact-alternative {
@@ -1646,21 +1639,21 @@ section ul > li:last-child {
 
 /* Credentials Bar */
 .credentials-bar {
-  display: flex;
-  /* Wrap whole credentials onto the next line. Without this the items are
-     squeezed to fit one line and each label breaks internally instead. */
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 0.6rem;
-  row-gap: 0.3rem;
+  /* Two columns rather than one tall stack, so four credentials read as a
+     compact block beside the portrait instead of running straight down. */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  column-gap: 1.5rem;
+  row-gap: 0.45rem;
   width: 100%;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--color-tertiary);
   margin-bottom: var(--space-3);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 /* The literal "|" spans in the markup become generated separators, so a
@@ -1669,22 +1662,17 @@ section ul > li:last-child {
   display: none;
 }
 
+/* Grid cells separate the credentials, so no inline divider is needed. */
 .credentials-bar span:not(.pipe):not(:last-child)::after {
-  content: "|";
-  margin-left: 0.6rem;
-  opacity: 0.6;
+  content: none;
 }
 
-@media (max-width: 991px) {
-  /* Narrow enough that lines start holding a single credential, where a
-     trailing divider would dangle. Drop them and let row-gap do the work. */
+@media (max-width: 575px) {
+  /* Too narrow for two columns to hold a credential on one or two lines. */
   .credentials-bar {
-    font-size: 12px;
-    row-gap: 0.5rem;
-  }
-
-  .credentials-bar span:not(.pipe):not(:last-child)::after {
-    content: none;
+    grid-template-columns: minmax(0, 1fr);
+    font-size: 11px;
+    row-gap: 0.6rem;
   }
 }
 
@@ -1852,7 +1840,7 @@ button:focus-visible {
 .home-service-grid .styled-list { margin-bottom: 0; }
 
 /* Plain category navigation and a single reading column. */
-.transition-section-heading { max-width: 46rem; margin-bottom: 2rem; }
+.transition-section-heading { margin-bottom: 2rem; }
 .transition-section-heading p { margin: 0; }
 .transition-tabs { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
 .transition-tablist { display: flex; flex-direction: column; align-self: start; gap: .25rem; border-left: 1px solid #c8d2cb; }
@@ -1865,7 +1853,7 @@ button:focus-visible {
 .transition-topic:first-child { padding-top: 0; }
 .transition-topic:last-child { border-bottom: 0; padding-bottom: 0; }
 .transition-topic h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 500; line-height: 1.3; margin: 0 0 .5rem; }
-.transition-topic p { font-size: 1rem; line-height: 1.65; margin: 0; max-width: 65ch; }
+.transition-topic p { font-size: 1rem; line-height: 1.65; margin: 0; }
 @media (min-width: 760px) {
   .transition-tabs { grid-template-columns: minmax(13rem, 1fr) minmax(0, 2.4fr); gap: clamp(2rem, 4vw, 3.5rem); }
 }
@@ -2027,43 +2015,55 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) { .consultation-button svg { transition: none; } }
 
 /* Compact footer navigation keeps all destinations in two readable columns. */
-.footer-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr) minmax(0, .85fr); gap: 2rem; }
+.footer-grid { grid-template-columns: minmax(0, 1.45fr) repeat(3, minmax(0, 1fr)); gap: 2rem 2rem; align-items: start; }
 .footer-grid > div { min-width: 0; }
 .footer-heading { margin-bottom: 1rem; }
-.footer-links-list { font-size: 1rem; line-height: 1.5; }
-.footer-links-list li { margin-bottom: .625rem; }
-.footer-quick-links { display: grid; grid-template-columns: minmax(5rem, .65fr) minmax(0, 1.4fr); column-gap: 1.25rem; align-items: start; }
-.footer-quick-links li { margin-bottom: .125rem; }
-.footer-quick-links a { display: inline-block; padding: .3rem 0; }
-@media (max-width: 899px) {
- .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
- .footer-grid > div:last-child { grid-column: 1 / -1; }
- .footer-grid > div:last-child .footer-links-list { display: flex; flex-wrap: wrap; gap: .5rem 2rem; }
+.footer-heading-second { margin-top: 1.75rem; }
+.footer-offices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1rem; margin-top: 1.25rem; }
+.footer-offices p { margin: 0; font-size: .85rem; line-height: 1.5; text-wrap: pretty; }
+.footer-hours { margin-top: 1.25rem; font-size: .9rem; line-height: 1.5; }
+@media (max-width: 459px) {
+  .footer-offices { grid-template-columns: minmax(0, 1fr); }
 }
-@media (max-width: 599px) {
+.footer-links-list { font-size: .95rem; line-height: 1.45; }
+/* Footer links are navigation, not inline prose: an 18px-tall hit area is below
+   the 24px minimum, so give each row padding instead of relying on the gap. */
+.footer-links-list a { display: inline-block; padding: .2rem 0; }
+.footer-links-list li { margin-bottom: .55rem; }
+@media (max-width: 1099px) {
+ .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
+ .footer-grid > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 719px) {
+ .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+ .footer-grid > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 459px) {
  .footer-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
 }
 
+
 .banner-header-left, .banner-header-left .container, .banner-header-left h1 { text-align: left; }
 
-.session-fee-description .session-fee-note { margin-bottom: .625rem; max-width: 60ch; }
+.session-fee-description .session-fee-note { margin-bottom: .625rem; }
 
 /* Short, client-focused introduction and reflective transition prompts. */
 .home-experience { margin-bottom: 2rem; }
 .aligned-page .home-experience h2 { font-size: clamp(1.5rem, 2.2vw, 1.875rem); margin-bottom: .75rem; }
-.home-experience p { max-width: 78ch; margin: 0; }
-.home-change-introduction { max-width: 78ch; }
+/* Full content width, matching the card and the change section below it; the
+   78ch reading measure left this block visibly short of everything around it. */
+.home-experience p { max-width: none; margin: 0; }
+.home-change-introduction { max-width: none; }
 .home-change-introduction p { margin-bottom: 1rem; }
 .transition-questions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; margin: 1.5rem 0 2rem; }
 .transition-questions > div { border-top: 1px solid var(--color-tertiary); padding-top: 1.25rem; min-width: 0; }
 .transition-questions h3 { font-size: 1.25rem; line-height: 1.35; margin-bottom: .75rem; }
 .transition-questions p { font-size: 1rem; line-height: 1.65; margin: 0; }
-.home-change-closing { max-width: 78ch; margin-bottom: 0; }
+.home-change-closing { margin-bottom: 0; }
 @media (max-width: 799px) { .transition-questions { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; } }
 
 /* Home copy refresh: readable credentials and room for the expanded introduction. */
 .home-experience p + p { margin-top: 1rem; }
-.home-intro-content .credentials-bar { display: grid; gap: .5rem; font-size: .8125rem; }
 .home-intro-content .credentials-bar span:not(.pipe):not(:last-child)::after { content: none; }
 .home-intro-content > p { margin-bottom: 0; }
 .home-intro-details { grid-column: 1 / -1; padding: clamp(1.5rem, 3vw, 2.5rem); border-top: 1px solid rgba(255,255,255,.15); }
@@ -2074,6 +2074,29 @@ button:focus-visible {
 .home-focus-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem 2rem; margin-bottom: 2rem; }
 .home-focus-list li { margin-bottom: 0; }
 .home-access-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+/* The video keeps a full section gap above and below, like every other section,
+   so the space around it reads the same top and bottom. */
+.home-introduction-video { padding-top: var(--section-gap); padding-bottom: var(--section-gap); }
+.home-experience-action { margin-top: 1.5rem; margin-bottom: 0; }
+
+/* The card's copy grew shorter across the review rounds, and because the portrait
+   fills the grid row it shrank with the text — 404x382 before, 404x321 after. Hold
+   it at the height it had, so the picture keeps its original proportions. */
+@media (min-width: 760px) {
+  .home-intro-portrait { min-height: 374px; }
+}
+.office-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin: 2rem 0 1.25rem; }
+.office-card { padding: 1.75rem; border: 1px solid var(--color-tertiary); border-radius: var(--radius-lg); background: #f7f3eb; box-shadow: var(--shadow-ambient); }
+.office-card h3 { margin-top: 0; margin-bottom: .75rem; }
+.office-card p { margin-bottom: .75rem; }
+.office-card p:last-child { margin-bottom: 0; }
+.office-address { font-weight: 600; }
+.office-transit { font-size: 1rem; line-height: 1.6; }
+.office-note { font-size: 1rem; margin-bottom: 1.5rem; }
+@media (max-width: 759px) {
+  .office-grid { grid-template-columns: minmax(0, 1fr); }
+  .office-card { padding: 1.25rem; }
+}
 .home-next-step h2 { color: var(--color-background); }
 .home-next-step p { color: rgba(253,249,241,.9); margin-bottom: 0; }
 .services-page h1, .services-page h2, .services-page h3, .services-page h4 { text-align: left; }

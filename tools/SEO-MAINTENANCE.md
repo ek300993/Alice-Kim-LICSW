@@ -38,3 +38,311 @@ Validation: three existing Node tests and the SEO validator pass. Local browser 
 The approved Version 2 review copy has been transferred into the public templates. The homepage keeps the $250 / 50-minute fee, placed below the telehealth information, and clarifies private pay and out-of-network service. The four discovery pages include Alice's final wording; the mental-health page now explicitly covers anxiety, depression, ADHD, stress and life transitions. Footers place Harvard Square before Brookline, omit Suite 510, and use consistent discovery labels. Production analytics and the existing editor remain enabled; review controls and noindex metadata are excluded.
 
 The separate client review site preserves Versions 1 and 2 and hosts a shareable before-and-after SEO summary. Its feedback database and report files are not part of this public website repository. Search Console submission, indexing verification, full article prerendering and booking-conversion measurement remain follow-up work.
+
+## October 23 SEO review — draft
+
+Applies *SEO Review and updates 10_23*. Draft only; nothing deployed. Open
+questions and unverified items are in `OPEN-QUESTIONS.md` under "SEO Review
+10/23", questions 29–36.
+
+**Four new discovery pages**, bringing the static page count to fourteen and the
+sitemap to 17 URLs:
+
+- `/life-transitions-counseling`
+- `/therapy-professionals-high-performance` — title is a placeholder pending the
+  keyword research the review asked for (Q31)
+- `/retirement-transition-therapy`
+- `/therapy-brookline`
+
+All four follow the existing discovery-page template, so head, nav and footer
+match the September pages. They are registered in `tools/generate-discovery.py`,
+`tools/check-seo.py` and all fourteen footers. The footer's second Quick Links
+column now carries all eight discovery pages.
+
+**Brookline address changed from 1051 to 1101 Beacon Street, Suite 2 East** in
+every footer and in the JSON-LD location data. Read as a correction rather than
+a second office — see Q29. `check-seo.py` now asserts the Brookline address in
+every footer, as it already did for Cambridge.
+
+**Home page copy** replaced with the review's wording: H1, hero paragraph, the
+"Experience that meets you where you are" block, "How Can I Help?", and the
+change/transition section. The home page `<title>` was matched to the new H1,
+which overlaps the Services page title — see Q33.
+
+**Both office locations** now appear with address, transit directions and a
+Google Maps link on the home page (new `.office-grid` / `.office-card` styles),
+in a new FAQ entry anchored at `#offices`, and on their respective location
+pages. Walking times are deliberately omitted (Q34).
+
+**FAQ**: the fees and insurance answer was replaced with the review's text,
+including the diagnosis condition on superbills and the statement that the
+practice does not coordinate with insurers. The "Why choose private pay" answer
+was made consistent with it. "How are sessions conducted?" now distinguishes
+in-person, online and walk-and-talk formats.
+
+**Coaching language** removed from the FAQ and the About page credential label.
+The credential issuer string and the `posts.json` redirect alias were kept on
+purpose — see Q30.
+
+Validation: `node --test tests/seo.test.cjs` (3 pass), `node --test
+tests/contact-form.test.cjs` (8 pass), `python3 tools/check-seo.py` (pass).
+Browser review covered the home page and new pages at 375px and 1280px: one H1
+per page, no horizontal overflow, office cards stack correctly on mobile.
+
+## October 23 SEO review, second pass — draft
+
+Applies the second version of the review document, which supplied approved page
+copy plus a list of edits. Still a draft; nothing deployed. See `OPEN-QUESTIONS.md`
+questions 37–42.
+
+**New page:** `/walk-and-talk-therapy`. Fifteen static pages, sitemap now 18 URLs.
+
+**Five pages rewritten** with the approved copy: the two office pages, life
+transitions, professionals (now titled "Therapy for Professionals in Demanding
+Careers and High-Performance Environments") and retirement. The copy is shorter
+and in Alice's voice; two blocks from the first pass did not survive the rewrite
+and are flagged as Q37.
+
+**Five FAQ entries removed** now that each has its own page, leaving eleven.
+`drop_accordion` in the edit script matched balanced `<div>` nesting rather than
+regex, and the div count was verified afterwards.
+
+**Suite number dropped** from the Brookline address everywhere, including both
+Google Maps query links. `check-seo.py` now asserts no footer contains "Suite".
+
+**Office hours** (Mon–Thu, 7:00 a.m. – 3:00 p.m.) added to every footer, the FAQ
+offices entry, the home page locations block, and the JSON-LD as
+`openingHoursSpecification`. The old `assert 'openingHours' not in schema` in
+`check-seo.py` was inverted to assert the hours are present and correct.
+
+**Footer rebalanced** from a lopsided two-column link list into four even columns
+(contact + hours, Quick Links, Therapy & Focus, Ways to Meet + Get Started), with
+breakpoints at 1099px, 719px and 459px. `.footer-quick-links` is gone.
+
+**Punctuation pass** applied to text nodes only — the replacer walks tags and
+skips `<script>`/`<style>` spans, so JSON-LD and inline JS were untouched.
+
+Validation: `node --test tests/seo.test.cjs` (3 pass), `node --test
+tests/contact-form.test.cjs` (8 pass), `python3 tools/check-seo.py` (fifteen
+pages, 18 URLs). Browser review at 375px, 800px and 1320px: four footer columns
+at desktop, correct stacking below, one H1 per page, no horizontal overflow.
+
+## October 23 SEO review, third pass — draft
+
+Applies the third edit list. Draft only. See `OPEN-QUESTIONS.md` questions 43–47.
+
+**Home page:** the four credentials moved from a single wrapping flex row into a
+two-column grid at a smaller size, with the inline pipe separators dropped since
+grid cells now do the separating. `.home-introduction-video` lost its top padding,
+which closes the double section gap under the "Take the Next Step" card — the
+page's `--section-gap` is 56px, so the gap there was 112px. Locations intro now
+names the Greater Boston walk-and-talk towns.
+
+**FAQ:** the Transitional Intelligence entry removed (ten entries remain). "How
+are sessions conducted" now says in-office and drops the 50-minute line. The
+offices entry lost its intro paragraph and the duplicated office hours. The
+payment entry lost the FSA/HSA sentence.
+
+**Footer:** "Therapy & Focus" renamed to "Areas of Focus"; the Brookline link
+reads "Beacon Street in Brookline"; the retirement link follows the page's new
+title. The two office addresses now sit side by side in a `.footer-offices` grid
+with hours beneath, and column one widened from 1.25fr to 1.45fr so neither
+address breaks awkwardly.
+
+**Retirement page retitled** to "Counseling and Therapy for Retirement and Older
+Adult Transitions" across the h1, title, og:title, footer and every cross-link.
+The slug was left as `/retirement-transition-therapy` — see Q46.
+
+**Wording aligned across pages:** in-office sessions in Harvard Square and
+Brookline with walk-and-talk in the Greater Boston area, applied to services,
+life transitions, professionals, retirement, anxiety, Asian American therapist
+and online therapy. Hyphenation normalised to "in-office" and "walk-and-talk"
+throughout.
+
+Stylesheet cache token bumped to v=33.
+
+Validation: both Node suites pass, `tools/check-seo.py` passes (fifteen pages, 18
+URLs). Browser review at 375px and 1320px: credentials render two-up, the gap
+under the consultation card is now one section gap, footer addresses sit side by
+side without wrapping, no horizontal overflow.
+
+## Release note — fourth review pass (SEO Review and updates 10_23 (4))
+
+**Decisions closed.** Office hours stay everywhere they are (footers, home
+locations block, JSON-LD). Transitional Intelligence stays unexplained. The two
+first-round passages stay out. The retirement page keeps
+`/retirement-transition-therapy` — settled deliberately, not by default: its three
+tokens are the page's three most valuable, the heading and title already carry
+"counseling" and "older adult", and nothing is indexed yet, so this was the moment
+to fix it.
+
+**"Virtual" removed site-wide.** The FAQ entry is now "Since you offer online
+sessions…"; the Services availability line reads "Online therapy is available to
+clients located in…". `check-seo.py` does not yet pin this; "telehealth" is
+untouched and still appears in descriptions, JSON-LD and the FAQ title (see Q51).
+
+**Titles.** Home keeps "Life Transition Counseling & Therapy in Cambridge &
+Brookline, MA". Services retitled to "Therapy Services & Areas of Focus | Alice
+Kim, LICSW" (title and og:title, 52 characters) to end the cannibalisation. The
+professionals page h1 gained "Counseling and"; its title was left short on purpose.
+
+**Home page.** The mental-health section keeps only its first sentence. Locations
+& Access reordered to the client's structure: "In-office therapy is available in
+two locations by appointment only", then the two office cards, then walk-and-talk,
+then online therapy, then office hours. "Both offices are by appointment only.
+Sessions are 50 minutes." removed.
+
+**Credentials font size — the round-three change had never taken effect.** A later,
+more specific rule, `.home-intro-content .credentials-bar { display: grid; gap:
+.5rem; font-size: .8125rem; }`, was overriding the 10.5px set on `.credentials-bar`
+and squeezing the two columns to a .5rem gutter. That rule was redundant with the
+base rule and has been deleted. Credentials now render at 10.5px against 18px body
+copy on desktop and 11px single-column below 575px.
+
+**Blog photographs self-hosted.** Three card images and one in-article image were
+loading from `cdn.marblism.com`, the original site builder's CDN — blocked in
+review copies and outside the practice's control. All four are downloaded,
+resized and stored in `Assets/` as `blog-*.jpeg` / `blog-*.webp`;
+`Assets/IMG_0573.jpeg` was resized in place from 4032px/5.2 MB to 1400px/481 KB.
+Total blog imagery 8.4 MB to 1.1 MB. `posts.json` rewritten and
+`tools/generate-discovery.py` re-run. The originals are recoverable from git.
+Blog banner heading centred (`banner-header-left` dropped).
+
+**Other copy.** Anxiety page: the `practice-facts` box's "In Person" line became
+"In Office: Harvard Square and Brookline, with walk-and-talk sessions in the
+Greater Boston area", with links to all three pages; the location/jurisdiction
+paragraph under "What happens in the consultation?" removed (this also closes
+Q45). Both location pages: opening paragraph shortened to the client's
+replacement wording. Asian American page h1 is now "Asian American and Immigrant
+Experiences"; its keyword-led title was kept deliberately.
+
+**Footer labels** (all fifteen footers): "Therapy for Professionals" to
+"Professionals in High Performing Environments", "Anxiety, Stress & Burnout" to
+"Anxiety, Depression, ADHD, Stress", "Asian American Therapist" to "Asian American
+and Immigrant Experiences". The "Explore the practice" lists on discovery pages
+use page *titles*, not footer labels, so they were correctly left alone.
+
+**check-seo.py** now pins the three footer labels, asserts no `cdn.marblism.com`
+reference survives anywhere, and fails if any `<img src="Assets/…">` on a checked
+page exceeds 600 KB. The inline page list was extracted to a `PAGES` constant.
+
+Stylesheet cache token bumped to v=34.
+
+Validation: `node --test tests/seo.test.cjs` (3 pass), `node --test
+tests/contact-form.test.cjs` (8 pass), `tools/check-seo.py` passes (fifteen pages,
+18 sitemap URLs, self-hosted blog photos). Browser sweep: all fifteen pages 200
+with v=34 and the three new footer labels, no "virtual", no CDN reference; no
+horizontal overflow at 375px on any of the fourteen styled pages; no console
+errors; all four blog images and both post-page images load.
+
+## Release note — fifth review pass (SEO Review and updates 10_23 (5)) and visual audit
+
+**Copy.** Home: the mental-health section is one paragraph; "Caregiving stress"
+added to `.home-focus-list` before "Life changes & aging" so the two-column grid
+holds four per column; the walk-and-talk towns joined the existing
+`.copy-emphasis` run rather than starting a second adjacent bold run. Blog
+article "Navigating the Shift": `<h2>Virtual Access</h2>` became `<h2>Online and
+In-Person</h2>` with an in-office/walk-and-talk sentence inserted before the
+telehealth paragraph.
+
+**Banner headings.** `banner-header-left` added to blog and services, so all five
+(home hero, About, Services, FAQ, Blog) are left-aligned. Verified identical
+alignment, size, gutter and banner height. `check-seo.py` now fails if any page
+carries a bare `class="banner-header"`.
+
+**Asian American page.** Title and og:title moved from "in Cambridge & Online" to
+"in Massachusetts & Online", because /therapy-cambridge-harvard-square already
+targets Cambridge and the two were competing. The eight "Explore the practice"
+lists quote page titles, so they were updated with it. The h1 stays as the client
+wrote it. The footer's "About Alice" was left alone — see the client note.
+
+**The portrait regression.** `.home-intro-portrait` fills the grid row of
+`.home-intro-card`, so four rounds of shortening the copy beside it shrank the
+picture: 404x382 to 404x321 at 1440px. Fixed with `min-height: 374px` above
+760px, which matches the original exactly at 1200/800/760 and is within 8px at
+1320+. Below 900px nothing had changed and nothing does now. Container padding was
+measured against HEAD and is unchanged (24px, max-width 1140px) — the client's
+other suspicion was unfounded.
+
+**Visual audit, twelve widths (320-1920) x fifteen pages.** No overflow, no
+clipped text, no element wider than its viewport. Four fixes:
+
+- `.btn` changed from `border: none` to `border: 2px solid transparent`, so a
+  solid button and an outlined one in the same row are the same height (was 48px
+  vs 52px). Pre-existing, also on the live site.
+- `.footer-links-list a { display: inline-block; padding: .2rem 0; }` restores a
+  24px+ tap target. A rule doing this job (`.footer-quick-links a`) was dropped in
+  an earlier round of this review; this is a regression fix.
+- `&nbsp;` before the arrow in the two office-card "In-person therapy in …" links,
+  so the arrow is never orphaned (it was at 375px and 768px on the Cambridge card).
+- Mobile `.credentials-bar` row-gap .4rem to .6rem; two of the four credentials
+  wrap and the row gap was barely wider than the line gap.
+
+**Images.** `chris-lawton-unsplash.jpg` and `karsten-wurth-unsplash.jpg` deleted
+(6.0 MB, unreferenced; the latter was only a placeholder string in `cms.js`, now
+pointed at a file that exists). Resized in place: About-Header.jpeg (1.2 MB to
+286 KB, 3024px to 1500px), IMG_1499.JPG, Blog-Header.jpg, aboutHeadshot.jpeg
+(1646px to 900px), harvard_logo.png, boston_college_logo.png, lyra_logo.png. Every
+image is still at least 2x its largest display size. `Assets/` is down from 15.2 MB
+to 3.7 MB across rounds four and five. Originals are recoverable from git.
+
+**Meta descriptions.** Eight pages ran past ~160 characters and were truncating in
+results; all fifteen are now within the limit. Home (84) and retirement (82)
+titles are over the displayed length by design — the keyword leads and only the
+practice name is cut.
+
+**check-seo.py** additionally asserts: no occurrence of "virtual" anywhere, no
+bare `banner-header` class, every meta description <= 160 characters, and no file
+in `Assets/` over 600 KB.
+
+Stylesheet cache token bumped to v=35.
+
+Validation: both Node suites pass (3 + 8). `tools/check-seo.py` passes. Browser:
+all fifteen pages 200 with v=35, no "virtual", all banners left-aligned; 180
+page/width combinations with no overflow; zero footer links under 24px at 375px;
+no console errors.
+
+## Release note — spacing and measure follow-ups
+
+**Video section.** `.home-introduction-video` now carries
+`padding-top: var(--section-gap); padding-bottom: var(--section-gap)` rather than
+the `padding-top: 0` set in round three. Measured with the scroll-reveal settled
+(forcing `is-visible` and disabling transitions — measuring it mid-animation
+reports a false 30px offset from the card above): 113px above the video frame,
+112px below, at 768/1024/1440/1920; 93/92 on a phone.
+
+**Width caps removed.** The client reported copy stopping short of the right edge
+across the site. A survey at 1440px over all fourteen styled pages found these
+caps leaving content short of its container, all now removed:
+
+| Rule | Was | Short by |
+| --- | --- | --- |
+| `.discovery-copy` | 760px | 380px, on 9 pages |
+| `.transition-section-heading` | 46rem | 404px |
+| `.measure` (About) | 800px | 340px |
+| `.text-container` (Blog) | 800px, centred | 340px |
+| `.contact-intro > p` | 760px | 332px |
+| `.home-experience p` | 78ch | 206px |
+| `.home-change-closing` | 78ch | 206px |
+| `.home-change-introduction` | 78ch | (already overridden later) |
+| `.transition-topic p` | 65ch | 354px |
+| `.session-fee-note` | 60ch | 333px |
+| `.hero + section .container > .mb-6:not(.card)` | 960px centred | varies |
+
+Deliberately left: `.container` at 1140px (the site's content column, unchanged
+from the live site), the hero's own `max-width` values on h1/p/.hero-note, which
+are composed against the photograph, `.portrait-card` at 400px, and image caps.
+A re-survey confirms nothing else in a section sits more than 40px short of its
+parent.
+
+Note for whoever picks this up: these caps existed as reading-measure limits.
+Body copy now runs to roughly 95-120 characters per line at 1440px, which is
+wider than the usual 45-85 guidance. That is the client's explicit preference,
+asked for twice; if it is ever revisited, a single cap on `.container` is a
+better lever than reinstating ten separate rules.
+
+Stylesheet cache token bumped to v=37.
+
+Validation: `tools/check-seo.py` passes, both Node suites pass, and 180
+page/width combinations (fifteen pages x twelve widths, 320-1920) show no
+overflow and no element wider than its viewport.
