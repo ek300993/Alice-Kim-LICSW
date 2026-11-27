@@ -21,7 +21,7 @@ class Page(HTMLParser):
         if tag=='script' and self.script is not None:
             self.scripts.append(self.script); self.script=None
 
-PAGES = ['index', 'about', 'services', 'faq', 'blog', 'post', 'life-transitions-counseling', 'therapy-professionals-high-performance', 'retirement-transition-therapy', 'therapy-cambridge-harvard-square', 'therapy-brookline', 'walk-and-talk-therapy', 'online-therapy', 'asian-american-therapist', 'anxiety-stress-burnout-therapy']
+PAGES = ['index', 'about', 'services', 'locations', 'faq', 'blog', 'post', 'life-transitions-counseling', 'therapy-professionals-high-performance', 'retirement-transition-therapy', 'therapy-cambridge-harvard-square', 'therapy-brookline', 'walk-and-talk-therapy', 'online-therapy', 'asian-american-therapist', 'anxiety-stress-burnout-therapy']
 for name in PAGES:
     page=Page((ROOT / (name+'.html')).read_text())
     if name != 'post':
@@ -51,7 +51,7 @@ for name in PAGES:
                 f.write(script); f.flush()
                 subprocess.run(['node','--check',f.name],check=True,capture_output=True)
 posts=json.loads((ROOT/'posts.json').read_text())
-expected={'https://alicekimlicsw.com'+path for path in ['/', '/about', '/services', '/faq', '/blog', '/life-transitions-counseling', '/therapy-professionals-high-performance', '/retirement-transition-therapy', '/therapy-cambridge-harvard-square', '/therapy-brookline', '/walk-and-talk-therapy', '/online-therapy', '/asian-american-therapist', '/anxiety-stress-burnout-therapy']}
+expected={'https://alicekimlicsw.com'+path for path in ['/', '/about', '/services', '/locations', '/faq', '/blog', '/life-transitions-counseling', '/therapy-professionals-high-performance', '/retirement-transition-therapy', '/therapy-cambridge-harvard-square', '/therapy-brookline', '/walk-and-talk-therapy', '/online-therapy', '/asian-american-therapist', '/anxiety-stress-burnout-therapy']}
 expected.update('https://alicekimlicsw.com/post.html?id='+p['id'] for p in posts)
 sitemap=ET.parse(ROOT/'sitemap.xml')
 urls=[e.text for e in sitemap.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')]
@@ -85,4 +85,4 @@ for page_name in PAGES:
             size = (ROOT/src).stat().st_size
             assert size < 600_000, (page_name, src, size)
 
-print(f'PASS: fifteen pages, JSON-LD, office hours, inline JS, {len(urls)} sitemap URLs, four fallback article links, four legacy redirects, self-hosted blog photos, left-aligned banners, no asset over 600 KB.')
+print(f'PASS: sixteen pages, JSON-LD, office hours, inline JS, {len(urls)} sitemap URLs, four fallback article links, four legacy redirects, self-hosted blog photos, left-aligned banners, no asset over 600 KB.')

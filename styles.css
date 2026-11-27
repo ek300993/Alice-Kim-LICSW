@@ -194,6 +194,18 @@ section {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Descriptive line under a page heading, so the heading itself stays short. */
+.banner-header .banner-subtitle {
+  color: #ffffff;
+  margin: var(--space-2) 0 0;
+  max-width: 62ch;
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  line-height: 1.3;
+  font-weight: 500;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
 .text-container {
   max-width: none;
 }
@@ -201,6 +213,17 @@ section {
 /* Long-form copy runs the full content width, like every other section. */
 .measure {
   max-width: none;
+}
+
+/* A short positioning line between a greeting and the body copy: heading face,
+   so it reads with the heading rather than as a first paragraph. */
+.about-deck {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 1.25rem;
 }
 
 /* Small uppercase label that sits above a section heading */
@@ -1219,17 +1242,31 @@ footer h3 {
 
 /* Mobile Responsiveness */
 
-/* Just above the menu-button breakpoint the full nav is a tight fit,
-   so the links and CTA tuck in to keep the logo at full size. */
-@media (min-width: 992px) and (max-width: 1099px) {
+/* Between these widths the six links and the CTA are a tight fit next to the
+   logo, so they tuck in by degrees rather than collapsing to the menu button. */
+@media (min-width: 1100px) and (max-width: 1279px) {
   .nav-links {
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
   .nav-cta-desktop {
-    margin-left: 1.25rem;
-    padding: 0.6rem 1.2rem;
+    margin-left: 1.5rem;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1099px) {
+  .nav-links {
+    gap: 1.125rem;
+  }
+
+  .nav-links a {
     font-size: 15px;
+  }
+
+  .nav-cta-desktop {
+    margin-left: 1.125rem;
+    padding: 0.6rem 1.1rem;
+    font-size: 14px;
   }
 }
 
@@ -1270,6 +1307,10 @@ footer h3 {
 
   .banner-header h1 {
     font-size: 40px;
+  }
+
+  .banner-header .banner-subtitle {
+    font-size: 1.5rem;
   }
 
   .grid-2,
@@ -1373,6 +1414,10 @@ footer h3 {
   .banner-header h1 {
     font-size: 34px;
     line-height: 1.15;
+  }
+
+  .banner-header .banner-subtitle {
+    font-size: 1.25rem;
   }
 
   .testimonial-card {
@@ -2047,12 +2092,7 @@ button:focus-visible {
 
 .session-fee-description .session-fee-note { margin-bottom: .625rem; }
 
-/* Short, client-focused introduction and reflective transition prompts. */
-.home-experience { margin-bottom: 2rem; }
-.aligned-page .home-experience h2 { font-size: clamp(1.5rem, 2.2vw, 1.875rem); margin-bottom: .75rem; }
-/* Full content width, matching the card and the change section below it; the
-   78ch reading measure left this block visibly short of everything around it. */
-.home-experience p { max-width: none; margin: 0; }
+/* Reflective transition prompts on the home page. */
 .home-change-introduction { max-width: none; }
 .home-change-introduction p { margin-bottom: 1rem; }
 .transition-questions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; margin: 1.5rem 0 2rem; }
@@ -2063,7 +2103,6 @@ button:focus-visible {
 @media (max-width: 799px) { .transition-questions { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; } }
 
 /* Home copy refresh: readable credentials and room for the expanded introduction. */
-.home-experience p + p { margin-top: 1rem; }
 .home-intro-content .credentials-bar span:not(.pipe):not(:last-child)::after { content: none; }
 .home-intro-content > p { margin-bottom: 0; }
 .home-intro-details { grid-column: 1 / -1; padding: clamp(1.5rem, 3vw, 2.5rem); border-top: 1px solid rgba(255,255,255,.15); }
@@ -2077,7 +2116,6 @@ button:focus-visible {
 /* The video keeps a full section gap above and below, like every other section,
    so the space around it reads the same top and bottom. */
 .home-introduction-video { padding-top: var(--section-gap); padding-bottom: var(--section-gap); }
-.home-experience-action { margin-top: 1.5rem; margin-bottom: 0; }
 
 /* The card's copy grew shorter across the review rounds, and because the portrait
    fills the grid row it shrank with the text — 404x382 before, 404x321 after. Hold
@@ -2097,8 +2135,10 @@ button:focus-visible {
   .office-grid { grid-template-columns: minmax(0, 1fr); }
   .office-card { padding: 1.25rem; }
 }
-.home-next-step h2 { color: var(--color-background); }
-.home-next-step p { color: rgba(253,249,241,.9); margin-bottom: 0; }
+/* The heading and lead sit inside a wrapper div, so they are styled by
+   descendant rather than by child, on every page that uses this card. */
+.consultation-card h2 { color: var(--color-background); }
+.consultation-card p { color: rgba(253,249,241,.9); margin-bottom: 0; }
 .services-page h1, .services-page h2, .services-page h3, .services-page h4 { text-align: left; }
 @media (max-width: 759px) {
   .home-help-topics, .home-focus-list { grid-template-columns: minmax(0, 1fr); }
@@ -2116,8 +2156,7 @@ body { font-size: var(--text-body); }
 h1, .hero-content h1, .banner-header h1, .discovery-copy h1 {
   font-size: var(--text-title); line-height: 1.15; font-weight: 500;
 }
-h2, .aligned-page h2, .contact-intro h2,
-.aligned-page .home-experience h2, .consultation-card > h2 {
+h2, .aligned-page h2, .contact-intro h2, .consultation-card > h2 {
   font-size: var(--text-section); line-height: 1.2; font-weight: 500;
 }
 h3, .transition-questions h3, .transition-topic h3,

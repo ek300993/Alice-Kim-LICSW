@@ -911,4 +911,9 @@ anyone who searches your name.
 
 - **54** — the About and FAQ page headings are now consistent with the rest, so
   this is closed.
-- Nothing else is waiting on you. The draft is complete.
+- **55** — RESOLVED. About and Services now follow the same heading pattern as
+  Blog, FAQ and Locations. You chose "About Alice Kim, LICSW" and "Life Transition
+  Counseling Services"; both descriptive lines are in the handover table.
+- **56** — RESOLVED. The Services section is now "Transitions We Work Through",
+  so it no longer echoes the page heading above it.
+- Nothing else is waiting on you.

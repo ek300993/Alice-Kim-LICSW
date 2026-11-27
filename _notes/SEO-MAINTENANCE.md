@@ -346,3 +346,163 @@ Stylesheet cache token bumped to v=37.
 Validation: `tools/check-seo.py` passes, both Node suites pass, and 180
 page/width combinations (fifteen pages x twelve widths, 320-1920) show no
 overflow and no element wider than its viewport.
+
+## Release note — home page trim, Locations page, keyword headings
+
+**New page: `/locations`.** "Locations & Ways to Meet" is the sixth item in the
+main navigation and the hub for the four existing ways-to-meet pages. It carries
+both office addresses with transit and parking detail, walk-and-talk and online
+availability, office hours, the fee, and the consultation card. Added to
+`sitemap.xml` (19 addresses now), to the footer Quick Links, and to the page lists
+in all three scripts under `tools/`.
+
+**Home page shortened.** The client's feedback was that the page repeated itself
+and ran long. Removed:
+
+- The two paragraphs marked for deletion ("Whether you're navigating a change…"
+  and "Drawing on 25+ years of clinical experience…"). They were the entire body
+  of the `.home-experience` block, so the heading above them ("Experience that
+  meets you where you are.") and a second consultation button came out with them
+  — the hero's own button sits directly above. Nothing of substance is lost: the
+  credentials bar still carries "25+ Years of Clinical Experience", and the About
+  page carries the experience narrative.
+- The full "Locations & Access" section, including both office cards. In its place
+  is a three-line summary that names both streets, the walk-and-talk area and the
+  six telehealth jurisdictions, and links to `/locations`. The addresses are still
+  on the home page in the hero note, the footer and the structured data, so the
+  local signals are unchanged.
+
+The `.home-experience` rules in `styles.css` are gone with the markup.
+
+**Headings now lead with the navigation word.** The FAQ page already did this, and
+the client asked for the same elsewhere. A new `.banner-subtitle` rule holds the
+descriptive line under the heading, so the heading itself stays short:
+
+| Page | Heading | Subtitle |
+| --- | --- | --- |
+| Blog | Life Transitions Blog | Practical Insights on Change and Growth |
+| FAQ | Frequently Asked Questions | Life Transitions Counseling and Therapy |
+| Locations | Locations & Ways to Meet | In-Person Therapy in Cambridge and Brookline, Walk-and-Talk, and Online |
+| About | About Alice Kim, LICSW | Therapist Specializing in Life Transitions, with 25+ Years of Experience |
+| Services | Life Transition Counseling Services | Evidence-Based Therapy for Change, Stress, and Relationships |
+
+On About, the name moves into the heading because people search it, and every
+keyword from the old single-line heading survives in the subtitle. On Services,
+the heading keeps the strongest search phrase and folds the tab word into it,
+rather than reducing to the bare word "Services", which would rank for nothing.
+
+Page `<title>` tags were not touched; the blog's title still reads "Life
+Transitions & Mental Health Blog", which is worth keeping.
+
+**Navigation fits six links.** The tightening that used to start at 1099px now
+starts at 1279px and goes a step further below 1100px. Measured on the Locations
+page at 992/1024/1100/1280/1440: no overflow, the menu button stays hidden above
+991px, and the gap between the logo and the first link never drops below 16px.
+The navigation label is the single word "Locations" for this reason; the full
+phrase is the page heading.
+
+**Consultation card.** Its heading and lead sit inside a wrapper div, so they were
+styled by `.home-next-step`, a home-page-only class. Generalised to
+`.consultation-card h2/p` so the card reads the same on `/locations`.
+
+**Follow-up, 26 November — the heading typeface.** The client reported that the
+fonts had changed. They had, on the four pages with a new heading, and it was a
+side effect of splitting the headings. The live FAQ banner is one `<h1>` with a
+`<br>` inside it, so both lines render in `--font-heading` (EB Garamond). A
+`<p class="banner-subtitle">` inherits `--font-body` (Inter) instead, so the
+second line silently changed face and dropped from 56px to 22px.
+
+`.banner-subtitle` now sets `font-family: var(--font-heading)` and 1.75rem /
+1.5rem / 1.25rem across the breakpoints. The split stays, because that is what
+puts each page's own name in the `<h1>`; it just reads as one heading again. The
+measure went from 44ch to 62ch so the Locations subtitle's first line, 58
+characters, keeps its own row as written.
+
+Worth knowing for next time: nothing in the repository loads EB Garamond or
+Inter. `styles.css` names them in `--font-heading` and `--font-body`, and the
+only Google Fonts request is for Mulish, which no rule uses. Both faces resolve
+from the machine's own installed fonts, so a visitor without them sees generic
+serif and sans. That is true of the live site too, and is a separate question
+from this change.
+
+Also this round, from the same notes: the home hero's opening line now breaks
+before "and find your way forward."; About's subtitle is "Experience that meets
+you where you are" (the heading taken off the home page); Locations' subtitle is
+two lines; FAQ and Blog headings take a colon. The Asian American page was
+confirmed unchanged — heading "Asian American and Immigrant Experiences",
+title "Asian American Therapist in Massachusetts & Online".
+
+Re-verified on this draft rather than assumed: the four visual-audit fixes and
+the three that followed all still hold — hero buttons both 52px, smallest footer
+tap target 28px, no stranded arrows on the Locations page at 375px, credentials
+24px apart against 10px between lines, video padding 56px top and bottom,
+body copy filling its column on all six main pages at 1440px, and no sideways
+scroll across 192 page/width combinations (16 pages x 12 widths, 320-1920).
+
+**Design calls, 26 November.** The client left three to me.
+
+*Colons.* Dropped from the FAQ and Blog headings, so none of the five carries
+one. On the live site the colon works because the banner is one sentence at one
+size and the colon is the only cue that the second half belongs to the first.
+Split into an `<h1>` and a `.banner-subtitle`, three cues already say it — line
+break, size drop, and now the shared heading face — so the colon is redundant,
+and at 56px in a serif a trailing colon reads as a notch. Consistency across the
+five settled it.
+
+*The hero break.* Kept. Measured at nine widths: three lines at 1024px and up,
+three at 600-768 with the middle line rewrapping, four at 414 and five at 375 —
+and "and find your way forward." keeps its own line at every one of them. It
+survives because the forced break sits at a clause boundary, so no conditional
+`<br>` is needed.
+
+*"Experience that meets you where you are."* Placed as a deck under "Hello, I'm
+Alice." on the About page, not in the `.eyebrow` slot. The eyebrow is a 13px
+uppercase tracked label built for glancing, which would have cost the line its
+warmth and displaced the greeting. New `.about-deck` rule: heading face, 1.5rem,
+`--color-text`, so the About page opens label / greeting / offer / biography and
+the type steps 36 - 24 - 18.
+
+About's banner subtitle is back to "Therapist Specializing in Life Transitions,
+with 25+ Years of Experience" at the client's request, so the search wording
+returns to the heading area and the warm line moves down the page.
+
+The Services section heading is now "Transitions We Work Through", which stops
+it echoing the page heading "Life Transition Counseling Services" directly above.
+
+Re-verified after these edits: no sideways scroll across 192 page/width
+combinations, and all five banner subtitles compute to EB Garamond.
+
+**The fonts are now actually loaded.** This closes the gap noted above, and it
+predates this round — it was true of the live site too.
+
+`styles.css` sets `--font-heading: 'EB Garamond'` and `--font-body: 'Inter'`, but
+nothing ever fetched either family. The only Google Fonts request was for Mulish,
+which no rule references. Both faces resolved from whatever the visitor had
+installed locally, so the site looked correct to anyone with them and fell back
+to generic serif and sans for everyone else. `blog.html` and `post.html` were
+worse still: no font links at all, not even the unused Mulish one.
+
+All sixteen pages now request:
+
+    https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap
+
+Weights chosen from what the stylesheet and the inline styles actually use: 400,
+500, 600, 700, plus Inter 300 for the inline light text and EB Garamond italic
+400 for the two italic rules. The Mulish link is gone from every page.
+
+The preconnect pair was also wrong and is corrected to the canonical form. It had
+`crossorigin="use-credentials"` on `fonts.googleapis.com`, which opens a
+credentialed connection the anonymous stylesheet fetch cannot reuse, and no
+`crossorigin` at all on `fonts.gstatic.com`, where the font files actually come
+from and where it is needed.
+
+Checked after the change: the real webfont metrics shift nothing. The hero
+paragraph still breaks to three rows at 768px and up, the home offices block to
+three, and the Locations subtitle to two; no page scrolls sideways across 192
+page/width combinations.
+
+Stylesheet cache token bumped to v=38.
+
+Validation: `tools/check-seo.py` passes over sixteen pages, both Node suites pass
+(11 tests), no broken internal links across all twenty HTML files, and the new
+page was checked at 375px and 1280px.

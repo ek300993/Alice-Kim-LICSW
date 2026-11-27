@@ -5,7 +5,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 import re,json
 
 ROOT=Path(__file__).resolve().parents[1]
-PAGES=['index','about','services','faq','blog','post','home-2','about-2','services-2','faq-2',
+PAGES=['index','about','services','locations','faq','blog','post','home-2','about-2','services-2','faq-2',
        'therapy-cambridge-harvard-square','online-therapy','asian-american-therapist','anxiety-stress-burnout-therapy']
 files={Path(name+'.html') for name in PAGES}
 files.update(map(Path,['styles.css','script.js','cms.js','article-seo.js','posts.json','robots.txt','sitemap.xml','CNAME']))
