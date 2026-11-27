@@ -501,7 +501,22 @@ paragraph still breaks to three rows at 768px and up, the home offices block to
 three, and the Locations subtitle to two; no page scrolls sideways across 192
 page/width combinations.
 
-Stylesheet cache token bumped to v=38.
+**Follow-up: the navigation button sat on two lines.** "Schedule a Free
+Consultation" was wrapping in the desktop navigation, which made that button
+76px tall and the whole nav row deeper than it needed to be. `.nav-cta-desktop`
+now carries `white-space: nowrap`.
+
+That widens the button from 238px to 276px, which was the reason not to do it
+casually with six links in the row. Measured at 992, 1024, 1100, 1200, 1280,
+1440 and 1920: one line at every width, button height 44-52px, the gap between
+the logo and the first link never below 16px, the menu button still hidden above
+991px, and no page overflow. The existing 992-1099 tier, which already drops the
+link font to 15px and tightens the CTA padding, absorbs the extra width, so no
+further tightening was needed.
+
+Stylesheet cache token bumped to v=39. The bump matters this time: v=38 is the
+token that went live earlier today, so without it returning visitors would keep
+the cached stylesheet and still see the two-line button.
 
 Validation: `tools/check-seo.py` passes over sixteen pages, both Node suites pass
 (11 tests), no broken internal links across all twenty HTML files, and the new

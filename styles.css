@@ -570,6 +570,8 @@ footer .footer-grid img,
 .nav-cta-desktop {
   display: inline-block;
   margin-left: 2rem;
+  /* The label is a single phrase; breaking it made the nav row 76px tall. */
+  white-space: nowrap;
 }
 
 .mobile-only {
